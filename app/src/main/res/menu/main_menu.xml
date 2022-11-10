@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+        android:id="@+id/opDatos"
+        android:title="Datos Personales" />
+    </group>
+
+    <item
+        android:id="@+id/opSolicitar"
+        android:title="Solicitar Días" />
+
+    <item
+        android:id="@+id/opCalendario"
+        android:title="Calendario" />
+
+    <item
+        android:id="@+id/opJornada"
+        android:title="Jornada" />
+
+    <item
+        android:id="@+id/opExtra"
+        android:title="Horas Extra" />
+
+    <item
+        android:id="@+id/opNotifi"
+        android:title="Notificaciones" />
+
+    <item
+        android:id="@+id/opJustifi"
+        android:title="Justificante" />
+
+</menu>

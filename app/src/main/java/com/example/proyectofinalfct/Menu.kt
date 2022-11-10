@@ -1,10 +1,14 @@
 package com.example.proyectofinalfct
 
+import android.R
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.example.proyectofinalfct.databinding.ActivityDatosUsuarioBinding
+import android.widget.Toolbar
+import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat
 import com.example.proyectofinalfct.databinding.ActivityMenuBinding
+
 
 class Menu : AppCompatActivity() {
     lateinit var binding: ActivityMenuBinding
@@ -12,6 +16,14 @@ class Menu : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding= ActivityMenuBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+
+        val toggle = ActionBarDrawerToggle(this,binding.drawerLayout,binding.toolbar,
+            R.string.ok,
+            R.string.cancel
+        )
+        binding.drawerLayout.addDrawerListener(toggle)
+        toggle.syncState()
 
         val bundle:Bundle? = intent.extras
         val email = bundle?.getString("email").toString()
@@ -63,5 +75,12 @@ class Menu : AppCompatActivity() {
             startActivity(docIntent)*/
         }
 
+    }
+    override fun onBackPressed() {
+        if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            binding.drawerLayout.closeDrawer(GravityCompat.START)
+        } else {
+            super.onBackPressed()
+        }
     }
 }
