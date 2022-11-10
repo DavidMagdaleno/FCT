@@ -33,11 +33,11 @@ class Menu : AppCompatActivity() {
         }
 
         binding.imgHextra.setOnClickListener {
-            /*val extraIntent = Intent(this,Horasextra::class.java).apply {
+            val extraIntent = Intent(this,HorasExtra::class.java).apply {
                 putExtra("email",email)
-                putExtra("Mod","None")
+                //putExtra("Mod","None")
             }
-            startActivity(extraIntent)*/
+            startActivity(extraIntent)
         }
 
         binding.imgNotifi.setOnClickListener {
