@@ -1,16 +1,22 @@
 package com.example.proyectofinalfct
 
 import Model.RegistroL
+import android.content.Intent
 import android.graphics.Bitmap
 import android.nfc.tech.NfcBarcode
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.MenuItem
 import android.widget.Toast
+import androidx.annotation.NonNull
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat
 import com.example.proyectofinalfct.databinding.ActivityRegistroLaboralBinding
+import com.google.android.material.navigation.NavigationView
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.zxing.BarcodeFormat
 import com.journeyapps.barcodescanner.BarcodeEncoder
@@ -18,9 +24,9 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-class RegistroLaboral : AppCompatActivity() {
+class RegistroLaboral : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener{
     lateinit var binding: ActivityRegistroLaboralBinding
-
+    private lateinit var intenMenu: Intent
     var dni:String=""
     var nombre:String=""
     var ape:String=""
@@ -41,6 +47,15 @@ class RegistroLaboral : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding= ActivityRegistroLaboralBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        binding.navigationView.setNavigationItemSelectedListener(this)
+
+        val toggle = ActionBarDrawerToggle(this,binding.drawerLayout,binding.toolbar,
+            R.string.ok,
+            R.string.cancel
+        )
+        binding.drawerLayout.addDrawerListener(toggle)
+        toggle.syncState()
 
         val bundle:Bundle? = intent.extras
         val email = bundle?.getString("email").toString()
@@ -202,6 +217,32 @@ class RegistroLaboral : AppCompatActivity() {
         builder.setPositiveButton("Aceptar",null)
         val dialog: AlertDialog = builder.create()
         dialog.show()
+    }
+
+    override fun onBackPressed() {
+        if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            binding.drawerLayout.closeDrawer(GravityCompat.START)
+        } else {
+            super.onBackPressed()
+        }
+    }
+
+    override fun onNavigationItemSelected(@NonNull menuItem: MenuItem): Boolean {
+        val bundle:Bundle? = intent.extras
+        val email = bundle?.getString("email").toString()
+        when (menuItem.itemId) {
+            R.id.opDatos -> intenMenu = Intent(this,DatosUsuario::class.java).apply { putExtra("email",email); putExtra("Mod","Modificar") }
+            R.id.opJornada -> intenMenu = Intent(this,RegistroLaboral::class.java).apply { putExtra("email",email) }
+            R.id.opExtra -> intenMenu = Intent(this,HorasExtra::class.java).apply { putExtra("email",email) }
+            //R.id.opCalendario -> intenMenu = Intent(this,RegistroLaboral::class.java).apply { putExtra("email",email) }
+            //R.id.opSolicitar -> intenMenu = Intent(this,RegistroLaboral::class.java).apply { putExtra("email",email) }
+            //R.id.opJustifi -> intenMenu = Intent(this,RegistroLaboral::class.java).apply { putExtra("email",email) }
+            //R.id.opNotifi -> intenMenu = Intent(this,RegistroLaboral::class.java).apply { putExtra("email",email) }
+            else -> throw IllegalArgumentException("menu option not implemented!!")
+        }
+        binding.drawerLayout.closeDrawer(GravityCompat.START)
+        startActivity(intenMenu)
+        return true
     }
 
 }

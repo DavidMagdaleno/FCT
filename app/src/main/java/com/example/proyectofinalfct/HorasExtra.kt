@@ -3,24 +3,31 @@ package com.example.proyectofinalfct
 import Adaptadores.AdaptadorHorasExtra
 import Model.HExtra
 import Model.RegistroL
+import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.annotation.NonNull
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.core.view.GravityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.proyectofinalfct.databinding.ActivityHorasExtraBinding
+import com.google.android.material.navigation.NavigationView
 import com.google.firebase.firestore.FirebaseFirestore
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
-class HorasExtra : AppCompatActivity() {
+class HorasExtra : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     lateinit var binding: ActivityHorasExtraBinding
+    private lateinit var intenMenu: Intent
     var meses= arrayOf("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre")
     var m = ArrayList<String>()
     var rhoras = ArrayList<RegistroL>()
@@ -35,6 +42,15 @@ class HorasExtra : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding= ActivityHorasExtraBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        binding.navigationView.setNavigationItemSelectedListener(this)
+
+        val toggle = ActionBarDrawerToggle(this,binding.drawerLayout,binding.toolbar,
+            R.string.ok,
+            R.string.cancel
+        )
+        binding.drawerLayout.addDrawerListener(toggle)
+        toggle.syncState()
 
         val bundle:Bundle? = intent.extras
         val email = bundle?.getString("email").toString()
@@ -170,5 +186,31 @@ class HorasExtra : AppCompatActivity() {
                     Log.e("wh", "Error getting documents.", task.exception)
                 }
             }
+    }
+
+    override fun onBackPressed() {
+        if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            binding.drawerLayout.closeDrawer(GravityCompat.START)
+        } else {
+            super.onBackPressed()
+        }
+    }
+
+    override fun onNavigationItemSelected(@NonNull menuItem: MenuItem): Boolean {
+        val bundle:Bundle? = intent.extras
+        val email = bundle?.getString("email").toString()
+        when (menuItem.itemId) {
+            R.id.opDatos -> intenMenu = Intent(this,DatosUsuario::class.java).apply { putExtra("email",email); putExtra("Mod","Modificar") }
+            R.id.opJornada -> intenMenu = Intent(this,RegistroLaboral::class.java).apply { putExtra("email",email) }
+            R.id.opExtra -> intenMenu = Intent(this,HorasExtra::class.java).apply { putExtra("email",email) }
+            //R.id.opCalendario -> intenMenu = Intent(this,RegistroLaboral::class.java).apply { putExtra("email",email) }
+            //R.id.opSolicitar -> intenMenu = Intent(this,RegistroLaboral::class.java).apply { putExtra("email",email) }
+            //R.id.opJustifi -> intenMenu = Intent(this,RegistroLaboral::class.java).apply { putExtra("email",email) }
+            //R.id.opNotifi -> intenMenu = Intent(this,RegistroLaboral::class.java).apply { putExtra("email",email) }
+            else -> throw IllegalArgumentException("menu option not implemented!!")
+        }
+        binding.drawerLayout.closeDrawer(GravityCompat.START)
+        startActivity(intenMenu)
+        return true
     }
 }

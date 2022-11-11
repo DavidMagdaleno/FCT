@@ -2,4 +2,6 @@
     <string name="app_name">ProyectoFinalFCT</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="cancel">0</string>
+    <string name="ok">1</string>
 </resources>

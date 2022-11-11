@@ -1,22 +1,28 @@
 package com.example.proyectofinalfct
 
-import android.R
+
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toolbar
+import android.util.Log
+import android.view.MenuItem
+import androidx.annotation.NonNull
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import com.example.proyectofinalfct.databinding.ActivityMenuBinding
+import com.google.android.material.navigation.NavigationView
 
 
-class Menu : AppCompatActivity() {
+class Menu : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener{
     lateinit var binding: ActivityMenuBinding
+    private lateinit var intenMenu:Intent
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding= ActivityMenuBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+
+        binding.navigationView.setNavigationItemSelectedListener(this)
 
         val toggle = ActionBarDrawerToggle(this,binding.drawerLayout,binding.toolbar,
             R.string.ok,
@@ -83,4 +89,23 @@ class Menu : AppCompatActivity() {
             super.onBackPressed()
         }
     }
+
+    override fun onNavigationItemSelected(@NonNull menuItem: MenuItem): Boolean {
+        val bundle:Bundle? = intent.extras
+        val email = bundle?.getString("email").toString()
+        when (menuItem.itemId) {
+            R.id.opDatos -> intenMenu = Intent(this,DatosUsuario::class.java).apply { putExtra("email",email); putExtra("Mod","Modificar") }
+            R.id.opJornada -> intenMenu = Intent(this,RegistroLaboral::class.java).apply { putExtra("email",email) }
+            R.id.opExtra -> intenMenu = Intent(this,HorasExtra::class.java).apply { putExtra("email",email) }
+            //R.id.opCalendario -> intenMenu = Intent(this,RegistroLaboral::class.java).apply { putExtra("email",email) }
+            //R.id.opSolicitar -> intenMenu = Intent(this,RegistroLaboral::class.java).apply { putExtra("email",email) }
+            //R.id.opJustifi -> intenMenu = Intent(this,RegistroLaboral::class.java).apply { putExtra("email",email) }
+            //R.id.opNotifi -> intenMenu = Intent(this,RegistroLaboral::class.java).apply { putExtra("email",email) }
+            else -> throw IllegalArgumentException("menu option not implemented!!")
+        }
+        binding.drawerLayout.closeDrawer(GravityCompat.START)
+        startActivity(intenMenu)
+        return true
+    }
+
 }

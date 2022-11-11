@@ -8,17 +8,23 @@ import android.graphics.BitmapFactory
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.annotation.NonNull
+import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.core.view.GravityCompat
 import com.example.proyectofinalfct.databinding.ActivityDatosUsuarioBinding
+import com.google.android.material.navigation.NavigationView
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import java.util.ArrayList
 
-class DatosUsuario : AppCompatActivity() {
+class DatosUsuario : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private val File=1
+    private lateinit var intenMenu:Intent
     var rhoras = ArrayList<RegistroL>()
     private val database= Firebase.storage
     val ref2=database.reference
@@ -32,6 +38,16 @@ class DatosUsuario : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding= ActivityDatosUsuarioBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+
+        binding.navigationView.setNavigationItemSelectedListener(this)
+
+        val toggle = ActionBarDrawerToggle(this,binding.drawerLayout,binding.toolbar,
+            R.string.ok,
+            R.string.cancel
+        )
+        binding.drawerLayout.addDrawerListener(toggle)
+        toggle.syncState()
 
 
         val bundle:Bundle? = intent.extras
@@ -185,6 +201,32 @@ class DatosUsuario : AppCompatActivity() {
         }
         if (callback != null) {
             callback.imagenes(perfil);
+        }
+    }
+
+    override fun onNavigationItemSelected(@NonNull menuItem: MenuItem): Boolean {
+        val bundle:Bundle? = intent.extras
+        val email = bundle?.getString("email").toString()
+        when (menuItem.itemId) {
+            R.id.opDatos -> intenMenu = Intent(this,DatosUsuario::class.java).apply { putExtra("email",email); putExtra("Mod","Modificar") }
+            R.id.opJornada -> intenMenu = Intent(this,RegistroLaboral::class.java).apply { putExtra("email",email) }
+            R.id.opExtra -> intenMenu = Intent(this,HorasExtra::class.java).apply { putExtra("email",email) }
+            //R.id.opCalendario -> intenMenu = Intent(this,RegistroLaboral::class.java).apply { putExtra("email",email) }
+            //R.id.opSolicitar -> intenMenu = Intent(this,RegistroLaboral::class.java).apply { putExtra("email",email) }
+            //R.id.opJustifi -> intenMenu = Intent(this,RegistroLaboral::class.java).apply { putExtra("email",email) }
+            //R.id.opNotifi -> intenMenu = Intent(this,RegistroLaboral::class.java).apply { putExtra("email",email) }
+            else -> throw IllegalArgumentException("menu option not implemented!!")
+        }
+        binding.drawerLayout.closeDrawer(GravityCompat.START)
+        startActivity(intenMenu)
+        return true
+    }
+
+    override fun onBackPressed() {
+        if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            binding.drawerLayout.closeDrawer(GravityCompat.START)
+        } else {
+            super.onBackPressed()
         }
     }
 
