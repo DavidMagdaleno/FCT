@@ -1,5 +1,6 @@
 package com.example.proyectofinalfct
 
+import Model.AJustificante
 import Model.RegistroL
 import android.content.Intent
 import android.graphics.Bitmap
@@ -35,6 +36,7 @@ class RegistroLaboral : AppCompatActivity(), NavigationView.OnNavigationItemSele
     var f:String=""
     var em:String=""
     var rhoras = ArrayList<RegistroL>()
+    var NJustifi = ArrayList<AJustificante>()
 
     val sdf = SimpleDateFormat("dd/MM/yyyy", Locale("es", "ES"))
     val sdf2 = SimpleDateFormat("HH:mm:ss", Locale("es", "ES"))
@@ -87,7 +89,9 @@ class RegistroLaboral : AppCompatActivity(), NavigationView.OnNavigationItemSele
             dire=(it.get("Direccion").toString())
             nac=(it.get("FechaNac").toString())
             if (it.get("Foto").toString()!=""){f=it.get("Foto").toString()}
+            NJustifi=it.get("Justificante") as ArrayList<AJustificante>
             sacarRegistro()
+
             //Toast.makeText(this, "Recuperado",Toast.LENGTH_SHORT).show()
 
         }.addOnFailureListener{
@@ -197,7 +201,8 @@ class RegistroLaboral : AppCompatActivity(), NavigationView.OnNavigationItemSele
             "Direccion" to dire,
             "FechaNac" to nac,
             "Foto" to f,
-            "Registro" to rhoras
+            "Registro" to rhoras,
+            "Justificante" to NJustifi
         )
 
         db.collection("usuarios")//añade o sebreescribe
@@ -232,11 +237,11 @@ class RegistroLaboral : AppCompatActivity(), NavigationView.OnNavigationItemSele
         val email = bundle?.getString("email").toString()
         when (menuItem.itemId) {
             R.id.opDatos -> intenMenu = Intent(this,DatosUsuario::class.java).apply { putExtra("email",email); putExtra("Mod","Modificar") }
-            R.id.opJornada -> intenMenu = Intent(this,RegistroLaboral::class.java).apply { putExtra("email",email) }
+            //R.id.opJornada -> intenMenu = Intent(this,RegistroLaboral::class.java).apply { putExtra("email",email) }
             R.id.opExtra -> intenMenu = Intent(this,HorasExtra::class.java).apply { putExtra("email",email) }
             //R.id.opCalendario -> intenMenu = Intent(this,RegistroLaboral::class.java).apply { putExtra("email",email) }
             //R.id.opSolicitar -> intenMenu = Intent(this,RegistroLaboral::class.java).apply { putExtra("email",email) }
-            //R.id.opJustifi -> intenMenu = Intent(this,RegistroLaboral::class.java).apply { putExtra("email",email) }
+            R.id.opJustifi -> intenMenu = Intent(this,Justificante::class.java).apply { putExtra("email",email) }
             //R.id.opNotifi -> intenMenu = Intent(this,RegistroLaboral::class.java).apply { putExtra("email",email) }
             else -> throw IllegalArgumentException("menu option not implemented!!")
         }

@@ -1,5 +1,6 @@
 package com.example.proyectofinalfct
 
+import Model.AJustificante
 import Model.ImgPerfil
 import Model.RegistroL
 import android.content.Intent
@@ -26,6 +27,7 @@ class DatosUsuario : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private val File=1
     private lateinit var intenMenu:Intent
     var rhoras = ArrayList<RegistroL>()
+    var NJustifi = ArrayList<AJustificante>()
     private val database= Firebase.storage
     val ref2=database.reference
     //private val cameraRequest=1888
@@ -64,6 +66,7 @@ class DatosUsuario : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 binding.txtNac.setText(it.get("FechaNac").toString())
                 if (it.get("Foto").toString()!=""){perfil.nombre=it.get("Foto").toString()}
                 rhoras=it.get("Registro") as ArrayList<RegistroL>
+                NJustifi=it.get("Justificante") as ArrayList<AJustificante>
                 //Toast.makeText(this, "Recuperado",Toast.LENGTH_SHORT).show()
             }.addOnFailureListener{
                 Toast.makeText(this, "Algo ha ido mal al recuperar",Toast.LENGTH_SHORT).show()
@@ -83,7 +86,8 @@ class DatosUsuario : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 "Direccion" to binding.txtDire.text.toString(),
                 "FechaNac" to binding.txtNac.text.toString(),
                 "Foto" to perfil.nombre,
-                "Registro" to rhoras
+                "Registro" to rhoras,
+                "Justificante" to NJustifi
             )
 
             db.collection("usuarios")//añade o sebreescribe
@@ -208,12 +212,12 @@ class DatosUsuario : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val bundle:Bundle? = intent.extras
         val email = bundle?.getString("email").toString()
         when (menuItem.itemId) {
-            R.id.opDatos -> intenMenu = Intent(this,DatosUsuario::class.java).apply { putExtra("email",email); putExtra("Mod","Modificar") }
+            //R.id.opDatos -> intenMenu = Intent(this,DatosUsuario::class.java).apply { putExtra("email",email); putExtra("Mod","Modificar") }
             R.id.opJornada -> intenMenu = Intent(this,RegistroLaboral::class.java).apply { putExtra("email",email) }
             R.id.opExtra -> intenMenu = Intent(this,HorasExtra::class.java).apply { putExtra("email",email) }
             //R.id.opCalendario -> intenMenu = Intent(this,RegistroLaboral::class.java).apply { putExtra("email",email) }
             //R.id.opSolicitar -> intenMenu = Intent(this,RegistroLaboral::class.java).apply { putExtra("email",email) }
-            //R.id.opJustifi -> intenMenu = Intent(this,RegistroLaboral::class.java).apply { putExtra("email",email) }
+            R.id.opJustifi -> intenMenu = Intent(this,Justificante::class.java).apply { putExtra("email",email) }
             //R.id.opNotifi -> intenMenu = Intent(this,RegistroLaboral::class.java).apply { putExtra("email",email) }
             else -> throw IllegalArgumentException("menu option not implemented!!")
         }

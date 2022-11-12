@@ -35,50 +35,51 @@ class Menu : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
         val email = bundle?.getString("email").toString()
 
         binding.imgCalendario.setOnClickListener {
-            /*val calendarIntent = Intent(this,Calendario::class.java).apply {
+            /*intenMenu = Intent(this,Calendario::class.java).apply {
                 putExtra("email",email)
                 putExtra("Mod","None")
             }
-            startActivity(calendarIntent)*/
+            startActivity(intenMenu)*/
         }
 
         binding.imgFichar.setOnClickListener {
-            val ficharIntent = Intent(this,RegistroLaboral::class.java).apply {
+            //val ficharIntent = Intent(this,RegistroLaboral::class.java).apply {
+            intenMenu = Intent(this,RegistroLaboral::class.java).apply {
                 putExtra("email",email)
                 //putExtra("Mod","None")
             }
-            startActivity(ficharIntent)
+            startActivity(intenMenu)
         }
 
         binding.imgHextra.setOnClickListener {
-            val extraIntent = Intent(this,HorasExtra::class.java).apply {
+            intenMenu = Intent(this,HorasExtra::class.java).apply {
                 putExtra("email",email)
                 //putExtra("Mod","None")
             }
-            startActivity(extraIntent)
+            startActivity(intenMenu)
         }
 
         binding.imgNotifi.setOnClickListener {
-            /*val notifiIntent = Intent(this,Notificaciones::class.java).apply {
+            /*intenMenu = Intent(this,Notificaciones::class.java).apply {
                 putExtra("email",email)
                 putExtra("Mod","None")
             }
-            startActivity(notifiIntent)*/
+            startActivity(intenMenu)*/
         }
 
         binding.imgVaca.setOnClickListener {
-            /*val vacaIntent = Intent(this,Vacaciones::class.java).apply {
+            /*intenMenu = Intent(this,Vacaciones::class.java).apply {
                 putExtra("email",email)
                 putExtra("Mod","None")
             }
-            startActivity(vacaIntent)*/
+            startActivity(intenMenu)*/
         }
         binding.imgMedico.setOnClickListener {
-            /*val docIntent = Intent(this,fAsistencia::class.java).apply {
+            intenMenu = Intent(this,Justificante::class.java).apply {
                 putExtra("email",email)
-                putExtra("Mod","None")
+                //putExtra("Mod","None")
             }
-            startActivity(docIntent)*/
+            startActivity(intenMenu)
         }
 
     }
@@ -99,7 +100,7 @@ class Menu : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
             R.id.opExtra -> intenMenu = Intent(this,HorasExtra::class.java).apply { putExtra("email",email) }
             //R.id.opCalendario -> intenMenu = Intent(this,RegistroLaboral::class.java).apply { putExtra("email",email) }
             //R.id.opSolicitar -> intenMenu = Intent(this,RegistroLaboral::class.java).apply { putExtra("email",email) }
-            //R.id.opJustifi -> intenMenu = Intent(this,RegistroLaboral::class.java).apply { putExtra("email",email) }
+            R.id.opJustifi -> intenMenu = Intent(this,Justificante::class.java).apply { putExtra("email",email) }
             //R.id.opNotifi -> intenMenu = Intent(this,RegistroLaboral::class.java).apply { putExtra("email",email) }
             else -> throw IllegalArgumentException("menu option not implemented!!")
         }
