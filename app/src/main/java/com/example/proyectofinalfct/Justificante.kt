@@ -46,7 +46,8 @@ class Justificante : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     var nac:String=""
     var f:String=""
     var rhoras = ArrayList<RegistroL>()
-    var arch:AJustificante= AJustificante("","","")
+    var arch = ArrayList<AJustificante>()
+    //var arch:AJustificante= AJustificante("","","")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -105,9 +106,10 @@ class Justificante : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 }.addOnSuccessListener { taskSnapshot ->
                     Log.e("Conseguido","Archivo subido con exito")
                     //perfil.nombre = FileUri!!.lastPathSegment.toString()
-                    arch.FechaIni=binding.etxtFechaIni.text.toString()
-                    arch.FechaFin=binding.etxtFechaFin.text.toString()
-                    arch.nombre=FileUri!!.lastPathSegment.toString()
+                    arch.add(AJustificante(binding.etxtFechaIni.text.toString(),binding.etxtFechaFin.text.toString(),FileUri!!.lastPathSegment.toString()))
+                    //arch.FechaIni=binding.etxtFechaIni.text.toString()
+                    //arch.FechaFin=binding.etxtFechaFin.text.toString()
+                    //arch.nombre=FileUri!!.lastPathSegment.toString()
                     archivo=true
                     //arch.Fecha=binding.calendarView.date.toString()----------------------------------------------------------
                     /*try {
@@ -143,7 +145,7 @@ class Justificante : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         //srol.adapter = adaptador
         calendar.setOnDateChangeListener(object : CalendarView.OnDateChangeListener{
             override fun onSelectedDayChange(view: CalendarView,year: Int, month: Int, dayOfMonth: Int) {
-                txt.setText(dayOfMonth.toString()+"/"+month.toString()+"/"+year.toString())
+                txt.setText(dayOfMonth.toString()+"/"+(month+1).toString()+"/"+year.toString())
             }
         })
         dialogo.setPositiveButton("Entrar",

@@ -28,6 +28,8 @@ import java.util.*
 class RegistroLaboral : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener{
     lateinit var binding: ActivityRegistroLaboralBinding
     private lateinit var intenMenu: Intent
+    private var accion:Int=-1
+
     var dni:String=""
     var nombre:String=""
     var ape:String=""
@@ -110,11 +112,12 @@ class RegistroLaboral : AppCompatActivity(), NavigationView.OnNavigationItemSele
                         if (rhoras.isNotEmpty()){
                             x.forEach { (key,value) ->
                                 if ((key.equals("horaFin") && value.equals("")) && (key.equals("fecha") && !value.equals(currentdate.toString())) ){
-                                    showAlert()
+                                    showAlert("Una jornada laboral anterior esta sin cerrar, por favor pongase en contacto con RRHH")
                                 }
                                 if (key.equals("fecha") && value.equals(currentdate.toString())){
                                         x.replace("horaFin", currenthour.toString())
                                     contiene=true
+                                    accion=1
                                     guardado(em)
                                 }
                             }
@@ -122,6 +125,7 @@ class RegistroLaboral : AppCompatActivity(), NavigationView.OnNavigationItemSele
                     }
                     if (!contiene){
                         rhoras.add(RegistroL(currentdate.toString(),currenthour.toString(),""))
+                        accion=0
                         guardado(em)
                     }
                 }
@@ -208,17 +212,19 @@ class RegistroLaboral : AppCompatActivity(), NavigationView.OnNavigationItemSele
         db.collection("usuarios")//añade o sebreescribe
             .document(email) //Será la clave del documento.
             .set(user).addOnSuccessListener {
-                Toast.makeText(this, "Almacenado", Toast.LENGTH_SHORT).show()
-                finish()
+                //Toast.makeText(this, "Almacenado", Toast.LENGTH_SHORT).show()
+                if (accion==0){showAlert("Se ha iniciado la jornada laboral")}
+                if (accion==1){showAlert("Se ha completado la jornada laboral")}
+                //finish()
             }.addOnFailureListener{
                 Toast.makeText(this, "Ha ocurrido un error", Toast.LENGTH_SHORT).show()
             }
     }
 
-    private fun showAlert(){
+    private fun showAlert(txt:String){
         val builder = AlertDialog.Builder(this)
         builder.setTitle("NOTIFICACION")
-        builder.setMessage("Una jornada laboral anterior esta sin cerrar, por favor pongase en contacto con RRHH")
+        builder.setMessage(txt)
         builder.setPositiveButton("Aceptar",null)
         val dialog: AlertDialog = builder.create()
         dialog.show()
