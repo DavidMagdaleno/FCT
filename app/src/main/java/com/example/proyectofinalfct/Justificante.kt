@@ -51,6 +51,8 @@ class Justificante : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     var Sdias= ArrayList<Dias>()
     //var arch:AJustificante= AJustificante("","","")
 
+    var NomArch:String=""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding= ActivityJustificanteBinding.inflate(layoutInflater)
@@ -82,7 +84,7 @@ class Justificante : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         binding.btnAcp.setOnClickListener {
             if (archivo){
-                RecuperaryGuardar()
+                Guardar()
             }else{
                 showAlert()
             }
@@ -108,11 +110,11 @@ class Justificante : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 }.addOnSuccessListener { taskSnapshot ->
                     Log.e("Conseguido","Archivo subido con exito")
                     //perfil.nombre = FileUri!!.lastPathSegment.toString()
-                    arch.add(AJustificante(binding.etxtFechaIni.text.toString(),binding.etxtFechaFin.text.toString(),FileUri!!.lastPathSegment.toString()))
+                    NomArch=FileUri!!.lastPathSegment.toString()
+                    Recuperar()
                     //arch.FechaIni=binding.etxtFechaIni.text.toString()
                     //arch.FechaFin=binding.etxtFechaFin.text.toString()
                     //arch.nombre=FileUri!!.lastPathSegment.toString()
-                    archivo=true
                     //arch.Fecha=binding.calendarView.date.toString()----------------------------------------------------------
                     /*try {
                         mostarimagenes(object : DatosUsuario.RolCallback {
@@ -163,7 +165,7 @@ class Justificante : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         return true
     }
 
-    fun RecuperaryGuardar(){
+    fun Recuperar(){
         val bundle:Bundle? = intent.extras
         val email = bundle?.getString("email").toString()
         db.collection("usuarios").document(email).get().addOnSuccessListener {
@@ -177,7 +179,10 @@ class Justificante : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             rhoras=it.get("Registro") as ArrayList<RegistroL>
             arch=it.get("Justificante") as ArrayList<AJustificante>
             Sdias=it.get("Dias") as ArrayList<Dias>
-            Guardar()
+
+            arch.add(AJustificante(binding.etxtFechaIni.text.toString(),binding.etxtFechaFin.text.toString(),NomArch))
+            archivo=true
+            //Guardar()
             //Toast.makeText(this, "Recuperado",Toast.LENGTH_SHORT).show()
 
         }.addOnFailureListener{
@@ -234,8 +239,8 @@ class Justificante : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.id.opJornada -> intenMenu = Intent(this,RegistroLaboral::class.java).apply { putExtra("email",email) }
             R.id.opExtra -> intenMenu = Intent(this,HorasExtra::class.java).apply { putExtra("email",email) }
             //R.id.opCalendario -> intenMenu = Intent(this,RegistroLaboral::class.java).apply { putExtra("email",email) }
-            //R.id.opSolicitar -> intenMenu = Intent(this,RegistroLaboral::class.java).apply { putExtra("email",email) }
-            R.id.opJustifi -> intenMenu = Intent(this,Justificante::class.java).apply { putExtra("email",email) }
+            R.id.opSolicitar -> intenMenu = Intent(this,SolicitarDias::class.java).apply { putExtra("email",email) }
+            //R.id.opJustifi -> intenMenu = Intent(this,Justificante::class.java).apply { putExtra("email",email) }
             //R.id.opNotifi -> intenMenu = Intent(this,RegistroLaboral::class.java).apply { putExtra("email",email) }
             else -> throw IllegalArgumentException("menu option not implemented!!")
         }
