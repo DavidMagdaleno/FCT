@@ -1,6 +1,7 @@
 package com.example.proyectofinalfct
 
 import Model.AJustificante
+import Model.Dias
 import Model.ImgPerfil
 import Model.RegistroL
 import android.content.Intent
@@ -28,6 +29,7 @@ class DatosUsuario : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private lateinit var intenMenu:Intent
     var rhoras = ArrayList<RegistroL>()
     var NJustifi = ArrayList<AJustificante>()
+    var Sdias= ArrayList<Dias>()
     private val database= Firebase.storage
     val ref2=database.reference
     //private val cameraRequest=1888
@@ -67,6 +69,7 @@ class DatosUsuario : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 if (it.get("Foto").toString()!=""){perfil.nombre=it.get("Foto").toString()}
                 rhoras=it.get("Registro") as ArrayList<RegistroL>
                 NJustifi=it.get("Justificante") as ArrayList<AJustificante>
+                Sdias=it.get("Dias") as ArrayList<Dias>
                 //Toast.makeText(this, "Recuperado",Toast.LENGTH_SHORT).show()
             }.addOnFailureListener{
                 Toast.makeText(this, "Algo ha ido mal al recuperar",Toast.LENGTH_SHORT).show()
@@ -87,7 +90,8 @@ class DatosUsuario : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 "FechaNac" to binding.txtNac.text.toString(),
                 "Foto" to perfil.nombre,
                 "Registro" to rhoras,
-                "Justificante" to NJustifi
+                "Justificante" to NJustifi,
+                "Dias" to Sdias
             )
 
             db.collection("usuarios")//añade o sebreescribe

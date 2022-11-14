@@ -1,6 +1,7 @@
 package com.example.proyectofinalfct
 
 import Model.AJustificante
+import Model.Dias
 import Model.ImgPerfil
 import Model.RegistroL
 import android.content.DialogInterface
@@ -47,6 +48,7 @@ class Justificante : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     var f:String=""
     var rhoras = ArrayList<RegistroL>()
     var arch = ArrayList<AJustificante>()
+    var Sdias= ArrayList<Dias>()
     //var arch:AJustificante= AJustificante("","","")
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -173,6 +175,8 @@ class Justificante : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             nac=(it.get("FechaNac").toString())
             if (it.get("Foto").toString()!=""){f=it.get("Foto").toString()}
             rhoras=it.get("Registro") as ArrayList<RegistroL>
+            arch=it.get("Justificante") as ArrayList<AJustificante>
+            Sdias=it.get("Dias") as ArrayList<Dias>
             Guardar()
             //Toast.makeText(this, "Recuperado",Toast.LENGTH_SHORT).show()
 
@@ -192,7 +196,8 @@ class Justificante : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             "FechaNac" to nac,
             "Foto" to f,
             "Registro" to rhoras,
-            "Justificante" to arch
+            "Justificante" to arch,
+            "Dias" to Sdias
         )
         db.collection("usuarios")//añade o sebreescribe
             .document(email) //Será la clave del documento.

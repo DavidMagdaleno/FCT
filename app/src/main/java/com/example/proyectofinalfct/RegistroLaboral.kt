@@ -1,6 +1,7 @@
 package com.example.proyectofinalfct
 
 import Model.AJustificante
+import Model.Dias
 import Model.RegistroL
 import android.content.Intent
 import android.graphics.Bitmap
@@ -39,6 +40,7 @@ class RegistroLaboral : AppCompatActivity(), NavigationView.OnNavigationItemSele
     var em:String=""
     var rhoras = ArrayList<RegistroL>()
     var NJustifi = ArrayList<AJustificante>()
+    var Sdias= ArrayList<Dias>()
 
     val sdf = SimpleDateFormat("dd/MM/yyyy", Locale("es", "ES"))
     val sdf2 = SimpleDateFormat("HH:mm:ss", Locale("es", "ES"))
@@ -91,7 +93,9 @@ class RegistroLaboral : AppCompatActivity(), NavigationView.OnNavigationItemSele
             dire=(it.get("Direccion").toString())
             nac=(it.get("FechaNac").toString())
             if (it.get("Foto").toString()!=""){f=it.get("Foto").toString()}
+            rhoras=it.get("Registro") as ArrayList<RegistroL>
             NJustifi=it.get("Justificante") as ArrayList<AJustificante>
+            Sdias=it.get("Dias") as ArrayList<Dias>
             sacarRegistro()
 
             //Toast.makeText(this, "Recuperado",Toast.LENGTH_SHORT).show()
@@ -206,7 +210,8 @@ class RegistroLaboral : AppCompatActivity(), NavigationView.OnNavigationItemSele
             "FechaNac" to nac,
             "Foto" to f,
             "Registro" to rhoras,
-            "Justificante" to NJustifi
+            "Justificante" to NJustifi,
+            "Dias" to Sdias
         )
 
         db.collection("usuarios")//añade o sebreescribe

@@ -68,11 +68,10 @@ class Menu : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
         }
 
         binding.imgVaca.setOnClickListener {
-            /*intenMenu = Intent(this,Vacaciones::class.java).apply {
+            intenMenu = Intent(this,SolicitarDias::class.java).apply {
                 putExtra("email",email)
-                putExtra("Mod","None")
             }
-            startActivity(intenMenu)*/
+            startActivity(intenMenu)
         }
         binding.imgMedico.setOnClickListener {
             intenMenu = Intent(this,Justificante::class.java).apply {
@@ -99,7 +98,7 @@ class Menu : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
             R.id.opJornada -> intenMenu = Intent(this,RegistroLaboral::class.java).apply { putExtra("email",email) }
             R.id.opExtra -> intenMenu = Intent(this,HorasExtra::class.java).apply { putExtra("email",email) }
             //R.id.opCalendario -> intenMenu = Intent(this,RegistroLaboral::class.java).apply { putExtra("email",email) }
-            //R.id.opSolicitar -> intenMenu = Intent(this,RegistroLaboral::class.java).apply { putExtra("email",email) }
+            R.id.opSolicitar -> intenMenu = Intent(this,SolicitarDias::class.java).apply { putExtra("email",email) }
             R.id.opJustifi -> intenMenu = Intent(this,Justificante::class.java).apply { putExtra("email",email) }
             //R.id.opNotifi -> intenMenu = Intent(this,RegistroLaboral::class.java).apply { putExtra("email",email) }
             else -> throw IllegalArgumentException("menu option not implemented!!")
