@@ -35,11 +35,10 @@ class Menu : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
         val email = bundle?.getString("email").toString()
 
         binding.imgCalendario.setOnClickListener {
-            /*intenMenu = Intent(this,Calendario::class.java).apply {
+            intenMenu = Intent(this,Calendario::class.java).apply {
                 putExtra("email",email)
-                putExtra("Mod","None")
             }
-            startActivity(intenMenu)*/
+            startActivity(intenMenu)
         }
 
         binding.imgFichar.setOnClickListener {
@@ -97,7 +96,7 @@ class Menu : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
             R.id.opDatos -> intenMenu = Intent(this,DatosUsuario::class.java).apply { putExtra("email",email); putExtra("Mod","Modificar") }
             R.id.opJornada -> intenMenu = Intent(this,RegistroLaboral::class.java).apply { putExtra("email",email) }
             R.id.opExtra -> intenMenu = Intent(this,HorasExtra::class.java).apply { putExtra("email",email) }
-            //R.id.opCalendario -> intenMenu = Intent(this,RegistroLaboral::class.java).apply { putExtra("email",email) }
+            R.id.opCalendario -> intenMenu = Intent(this,Calendario::class.java).apply { putExtra("email",email) }
             R.id.opSolicitar -> intenMenu = Intent(this,SolicitarDias::class.java).apply { putExtra("email",email) }
             R.id.opJustifi -> intenMenu = Intent(this,Justificante::class.java).apply { putExtra("email",email) }
             //R.id.opNotifi -> intenMenu = Intent(this,RegistroLaboral::class.java).apply { putExtra("email",email) }
