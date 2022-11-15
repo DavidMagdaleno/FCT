@@ -84,7 +84,7 @@ dependencies {
 
     implementation 'com.journeyapps:zxing-android-embedded:4.2.0'
 
-
+    implementation 'sun.bob:mcalendarview:1.0.0'
 
 
 }
