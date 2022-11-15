@@ -17,6 +17,7 @@ import android.widget.Toast
 import androidx.annotation.NonNull
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
+import androidx.core.view.isVisible
 import com.example.proyectofinalfct.databinding.ActivityDatosUsuarioBinding
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.firestore.FirebaseFirestore

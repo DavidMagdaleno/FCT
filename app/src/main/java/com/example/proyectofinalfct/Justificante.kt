@@ -68,6 +68,8 @@ class Justificante : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         toggle.syncState()
 
 
+        binding.btnAcp.isEnabled=false
+
         binding.btnSubir.setOnClickListener {
             val intent= Intent(Intent.ACTION_GET_CONTENT)
             intent.type="*/*"
@@ -180,11 +182,9 @@ class Justificante : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             arch=it.get("Justificante") as ArrayList<AJustificante>
             Sdias=it.get("Dias") as ArrayList<Dias>
 
-            arch.add(AJustificante(binding.etxtFechaIni.text.toString(),binding.etxtFechaFin.text.toString(),NomArch))
+            binding.btnAcp.isEnabled=true
             archivo=true
-            //Guardar()
             //Toast.makeText(this, "Recuperado",Toast.LENGTH_SHORT).show()
-
         }.addOnFailureListener{
             Toast.makeText(this, "Algo ha ido mal al recuperar",Toast.LENGTH_SHORT).show()
         }
@@ -192,6 +192,7 @@ class Justificante : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     fun Guardar(){
         val bundle:Bundle? = intent.extras
         val email = bundle?.getString("email").toString()
+        arch.add(AJustificante(binding.etxtFechaIni.text.toString(),binding.etxtFechaFin.text.toString(),NomArch))
         //Se guardarán en modo HashMap (clave, valor).
         var user = hashMapOf(
             "DNI" to dni,
@@ -240,7 +241,7 @@ class Justificante : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.id.opExtra -> intenMenu = Intent(this,HorasExtra::class.java).apply { putExtra("email",email) }
             R.id.opCalendario -> intenMenu = Intent(this,Calendario::class.java).apply { putExtra("email",email) }
             R.id.opSolicitar -> intenMenu = Intent(this,SolicitarDias::class.java).apply { putExtra("email",email) }
-            //R.id.opJustifi -> intenMenu = Intent(this,Justificante::class.java).apply { putExtra("email",email) }
+            R.id.opJustifi -> intenMenu = Intent(this,Justificante::class.java).apply { putExtra("email",email) }
             //R.id.opNotifi -> intenMenu = Intent(this,RegistroLaboral::class.java).apply { putExtra("email",email) }
             else -> throw IllegalArgumentException("menu option not implemented!!")
         }

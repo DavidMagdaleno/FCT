@@ -41,8 +41,9 @@ tools:openDrawer="start">
             tools:layout="@layout/fragment_head" />
 
         <LinearLayout
-            android:layout_width="345dp"
-            android:layout_height="620dp"
+            android:layout_width="349dp"
+            android:layout_height="545dp"
+            android:layout_marginTop="50dp"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -54,7 +55,6 @@ tools:openDrawer="start">
                 android:id="@+id/txtDNI"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="50dp"
                 android:ems="10"
                 android:hint="DNI"
                 android:inputType="textPersonName" />
