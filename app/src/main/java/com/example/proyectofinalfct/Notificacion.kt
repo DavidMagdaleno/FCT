@@ -1,26 +1,22 @@
 package com.example.proyectofinalfct
 
-
 import android.content.Intent
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import androidx.annotation.NonNull
 import androidx.appcompat.app.ActionBarDrawerToggle
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
-import com.example.proyectofinalfct.databinding.ActivityMenuBinding
+import com.example.proyectofinalfct.databinding.ActivityNotificacionBinding
 import com.google.android.material.navigation.NavigationView
 
-
-class Menu : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener{
-    lateinit var binding: ActivityMenuBinding
-    private lateinit var intenMenu:Intent
+class Notificacion : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+    lateinit var binding: ActivityNotificacionBinding
+    private lateinit var intenMenu: Intent
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding= ActivityMenuBinding.inflate(layoutInflater)
+        binding= ActivityNotificacionBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
 
         binding.navigationView.setNavigationItemSelectedListener(this)
 
@@ -31,55 +27,8 @@ class Menu : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
         binding.drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
 
-        val bundle:Bundle? = intent.extras
-        val email = bundle?.getString("email").toString()
-
-        binding.imgCalendario.setOnClickListener {
-            intenMenu = Intent(this,Calendario::class.java).apply {
-                putExtra("email",email)
-            }
-            startActivity(intenMenu)
-        }
-
-        binding.imgFichar.setOnClickListener {
-            //val ficharIntent = Intent(this,RegistroLaboral::class.java).apply {
-            intenMenu = Intent(this,RegistroLaboral::class.java).apply {
-                putExtra("email",email)
-                //putExtra("Mod","None")
-            }
-            startActivity(intenMenu)
-        }
-
-        binding.imgHextra.setOnClickListener {
-            intenMenu = Intent(this,HorasExtra::class.java).apply {
-                putExtra("email",email)
-                //putExtra("Mod","None")
-            }
-            startActivity(intenMenu)
-        }
-
-        binding.imgNotifi.setOnClickListener {
-            intenMenu = Intent(this,Notificacion::class.java).apply {
-                putExtra("email",email)
-            }
-            startActivity(intenMenu)
-        }
-
-        binding.imgVaca.setOnClickListener {
-            intenMenu = Intent(this,SolicitarDias::class.java).apply {
-                putExtra("email",email)
-            }
-            startActivity(intenMenu)
-        }
-        binding.imgMedico.setOnClickListener {
-            intenMenu = Intent(this,Justificante::class.java).apply {
-                putExtra("email",email)
-                //putExtra("Mod","None")
-            }
-            startActivity(intenMenu)
-        }
-
     }
+
     override fun onBackPressed() {
         if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
             binding.drawerLayout.closeDrawer(GravityCompat.START)
@@ -105,5 +54,4 @@ class Menu : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
         startActivity(intenMenu)
         return true
     }
-
 }

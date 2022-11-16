@@ -28,6 +28,7 @@
             android:layout_width="40dp"
             android:layout_height="39dp"
             android:src="@drawable/ic_baseline_account_circle_24"
+            android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.956"

@@ -76,17 +76,17 @@ class Calendario : AppCompatActivity(), NavigationView.OnNavigationItemSelectedL
                                 d=x.get("fechaIni")!!.substringBefore("/")
                                 if (x.getValue("estado").equals("Pendiente")){
                                     for (i in 0..dias){
-                                        binding.calendar.markDate(y.toInt(), me.toInt(), d.toInt()+i).setMarkedStyle(MarkStyle.BACKGROUND,Color.YELLOW)
+                                        binding.calendar.markDate(y.toInt(), pasarMes(me,d.toInt()+i).toInt(), d.toInt()+i).setMarkedStyle(MarkStyle.BACKGROUND,Color.YELLOW)
                                     }
                                 }
                                 if (x.getValue("estado").equals("Aprobado")){
                                     for (i in 0..dias){
-                                        binding.calendar.markDate(y.toInt(), me.toInt(), d.toInt()+i).setMarkedStyle(MarkStyle.BACKGROUND,Color.GREEN)
+                                        binding.calendar.markDate(y.toInt(), pasarMes(me,d.toInt()+i).toInt(), d.toInt()+i).setMarkedStyle(MarkStyle.BACKGROUND,Color.GREEN)
                                     }
                                 }
                                 if (x.getValue("estado").equals("Denegado")){
                                     for (i in 0..dias){
-                                        binding.calendar.markDate(y.toInt(), me.toInt(), d.toInt()+i).setMarkedStyle(MarkStyle.BACKGROUND,Color.RED)
+                                        binding.calendar.markDate(y.toInt(), pasarMes(me,d.toInt()+i).toInt(), d.toInt()+i).setMarkedStyle(MarkStyle.BACKGROUND,Color.RED)
                                     }
                                 }
                             }
@@ -135,6 +135,26 @@ class Calendario : AppCompatActivity(), NavigationView.OnNavigationItemSelectedL
         return datep
     }
 
+    fun pasarMes(m:String, d:Int):String{
+        var me:String=""
+        if ((m.toInt())%2==0){
+            if (m.toInt()==2){
+                if (d>28){
+                    me=(m.toInt()+1).toString()
+                }
+            }else{
+                if (d>30){
+                    me=(m.toInt()+1).toString()
+                }
+            }
+        }else{
+            if (d>31){
+                me=(m.toInt()+1).toString()
+            }
+        }
+        return me
+    }
+
     override fun onBackPressed() {
         if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
             binding.drawerLayout.closeDrawer(GravityCompat.START)
@@ -153,7 +173,7 @@ class Calendario : AppCompatActivity(), NavigationView.OnNavigationItemSelectedL
             R.id.opCalendario -> intenMenu = Intent(this,Calendario::class.java).apply { putExtra("email",email) }
             R.id.opSolicitar -> intenMenu = Intent(this,SolicitarDias::class.java).apply { putExtra("email",email) }
             R.id.opJustifi -> intenMenu = Intent(this,Justificante::class.java).apply { putExtra("email",email) }
-            //R.id.opNotifi -> intenMenu = Intent(this,RegistroLaboral::class.java).apply { putExtra("email",email) }
+            R.id.opNotifi -> intenMenu = Intent(this,Notificacion::class.java).apply { putExtra("email",email) }
             else -> throw IllegalArgumentException("menu option not implemented!!")
         }
         binding.drawerLayout.closeDrawer(GravityCompat.START)

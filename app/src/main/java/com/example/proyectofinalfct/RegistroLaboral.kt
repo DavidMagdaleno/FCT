@@ -253,7 +253,7 @@ class RegistroLaboral : AppCompatActivity(), NavigationView.OnNavigationItemSele
             R.id.opCalendario -> intenMenu = Intent(this,Calendario::class.java).apply { putExtra("email",email) }
             R.id.opSolicitar -> intenMenu = Intent(this,SolicitarDias::class.java).apply { putExtra("email",email) }
             R.id.opJustifi -> intenMenu = Intent(this,Justificante::class.java).apply { putExtra("email",email) }
-            //R.id.opNotifi -> intenMenu = Intent(this,RegistroLaboral::class.java).apply { putExtra("email",email) }
+            R.id.opNotifi -> intenMenu = Intent(this,Notificacion::class.java).apply { putExtra("email",email) }
             else -> throw IllegalArgumentException("menu option not implemented!!")
         }
         binding.drawerLayout.closeDrawer(GravityCompat.START)

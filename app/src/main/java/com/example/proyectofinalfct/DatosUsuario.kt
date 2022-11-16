@@ -67,7 +67,10 @@ class DatosUsuario : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 binding.txtApe.setText(it.get("Apellidos").toString())
                 binding.txtDire.setText(it.get("Direccion").toString())
                 binding.txtNac.setText(it.get("FechaNac").toString())
-                if (it.get("Foto").toString()!=""){perfil.nombre=it.get("Foto").toString()}
+                if (it.get("Foto").toString()!=""){
+                    perfil.nombre=it.get("Foto").toString()
+                    recuperarFoto()
+                }
                 rhoras=it.get("Registro") as ArrayList<RegistroL>
                 NJustifi=it.get("Justificante") as ArrayList<AJustificante>
                 Sdias=it.get("Dias") as ArrayList<Dias>
@@ -213,6 +216,27 @@ class DatosUsuario : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
+    fun recuperarFoto(){
+        val bundle: Bundle? = intent.extras
+        val email = bundle?.getString("email").toString()
+        if(perfil.nombre!=""){
+            val desRef = Firebase.storage.reference.child("Perfiles/").child(email + "/")//.child(perfil.nombre)
+            desRef.listAll().addOnCompleteListener { lista ->
+                if (lista.isSuccessful){
+                    for (i in lista.result.items) {
+                        i.getBytes(ONE_MEGABYTE).addOnCompleteListener() {
+                            if (it.isSuccessful) {
+                                val img = getBitmap(it.result)!!
+                                perfil.img = img
+                                binding.imgFoto.setImageBitmap(img)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     override fun onNavigationItemSelected(@NonNull menuItem: MenuItem): Boolean {
         val bundle:Bundle? = intent.extras
         val email = bundle?.getString("email").toString()
@@ -223,7 +247,7 @@ class DatosUsuario : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.id.opCalendario -> intenMenu = Intent(this,Calendario::class.java).apply { putExtra("email",email) }
             R.id.opSolicitar -> intenMenu = Intent(this,SolicitarDias::class.java).apply { putExtra("email",email) }
             R.id.opJustifi -> intenMenu = Intent(this,Justificante::class.java).apply { putExtra("email",email) }
-            //R.id.opNotifi -> intenMenu = Intent(this,RegistroLaboral::class.java).apply { putExtra("email",email) }
+            R.id.opNotifi -> intenMenu = Intent(this,Notificacion::class.java).apply { putExtra("email",email) }
             else -> throw IllegalArgumentException("menu option not implemented!!")
         }
         binding.drawerLayout.closeDrawer(GravityCompat.START)

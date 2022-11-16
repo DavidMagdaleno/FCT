@@ -44,14 +44,14 @@ class HeadFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val boton:ImageView=view.findViewById(R.id.imgUser)
-        boton.setOnClickListener {
+        /*boton.setOnClickListener {
 
             val userIntent = Intent(this.context,DatosUsuario::class.java).apply {
                 putExtra("email",email)
                 putExtra("Mod","Modificar")
             }
             startActivity(userIntent)
-        }
+        }*/
     }
 
     companion object {
