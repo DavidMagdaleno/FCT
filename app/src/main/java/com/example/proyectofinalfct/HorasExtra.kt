@@ -26,17 +26,17 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 class HorasExtra : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
-    lateinit var binding: ActivityHorasExtraBinding
+    private lateinit var binding: ActivityHorasExtraBinding
     private lateinit var intenMenu: Intent
-    var meses= arrayOf("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre")
-    var m = ArrayList<String>()
-    var rhoras = ArrayList<RegistroL>()
-    var rhorasextra = ArrayList<HExtra>()
-    lateinit var miRecyclerView : RecyclerView
+    private var meses= arrayOf("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre")
+    private var m = ArrayList<String>()
+    private var rhoras = ArrayList<RegistroL>()
+    private var rhorasextra = ArrayList<HExtra>()
+    private lateinit var miRecyclerView : RecyclerView
     private val db = FirebaseFirestore.getInstance()
-    var em:String=""
-    val sdf = SimpleDateFormat("yyyy", Locale("es", "ES"))
-    val currentyear = sdf.format(Date())
+    private var em:String=""
+    private val sdf = SimpleDateFormat("yyyy", Locale("es", "ES"))
+    private val currentyear = sdf.format(Date())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,8 +69,8 @@ class HorasExtra : AppCompatActivity(), NavigationView.OnNavigationItemSelectedL
 
         binding.spMeses.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, pos: Int, id: Long) {
-                var p = m[pos]
-                var num=meses.indexOf(p)+1
+                val p = m[pos]
+                val num=meses.indexOf(p)+1
                 mostrarHoras(num.toString())
             }
             override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -79,26 +79,24 @@ class HorasExtra : AppCompatActivity(), NavigationView.OnNavigationItemSelectedL
         }
     }
 
-    fun stringtodate(t:String): Date {
+    private fun stringtodate(t:String): Date {
         val formatter = SimpleDateFormat("HH", Locale("es", "ES"))
         val datep = formatter.parse(t)
         return datep
     }
 
-    fun sacarMeses(){
+    private fun sacarMeses(){
         var repme=""
         try {
             recuperarRegistro(object : RolCallback {
                 @RequiresApi(Build.VERSION_CODES.N)
                 override fun horasRecibido(horasNuevo: ArrayList<RegistroL>) {
                     rhoras = horasNuevo
-                    //m.add("Elije un Mes")
                     for (i in 0..rhoras.size-1){
-                        var x=rhoras[i] as kotlin.collections.HashMap<String, String>
+                        val x=rhoras[i] as kotlin.collections.HashMap<String, String>
                         if (rhoras.isNotEmpty()){
-                            var me=x.get("fecha")!!.removeRange(0,3).removeRange(2,7)
-                            var y=x.get("fecha")!!.substringAfterLast("/")
-                            //var f:Date= stringtodate(x.get("fecha")!!)
+                            val me=x.get("fecha")!!.removeRange(0,3).removeRange(2,7)
+                            val y=x.get("fecha")!!.substringAfterLast("/")
                             if (y.equals(currentyear)){
                                 if (me!=repme){
                                     m.add(meses[me.toInt()-1])
@@ -143,10 +141,10 @@ class HorasExtra : AppCompatActivity(), NavigationView.OnNavigationItemSelectedL
                 override fun horasRecibido2(horasNuevo: ArrayList<RegistroL>) {
                     rhoras = horasNuevo
                     for (i in 0..rhoras.size-1){
-                        var x=rhoras[i] as kotlin.collections.HashMap<String, String>
+                        val x=rhoras[i] as kotlin.collections.HashMap<String, String>
                         if (rhoras.isNotEmpty()){
-                            var me=x.get("fecha")!!.removeRange(0,3).removeRange(2,7)
-                            var y=x.get("fecha")!!.substringAfterLast("/")
+                            val me=x.get("fecha")!!.removeRange(0,3).removeRange(2,7)
+                            val y=x.get("fecha")!!.substringAfterLast("/")
                             if ((me==meop) && (y.equals(currentyear))){
                                 if (!x.get("horaFin").equals("")){
                                     totalhExtra= ((stringtodate(x.get("horaFin")!!).hours.toInt())-(stringtodate(x.get("horaIni")!!).hours.toInt()))-8
@@ -176,11 +174,11 @@ class HorasExtra : AppCompatActivity(), NavigationView.OnNavigationItemSelectedL
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     //poner los demas para recuperar todos los datos
-                    var x= task.result.data?.get("Registro") as ArrayList<RegistroL>
+                    val x= task.result.data?.get("Registro") as ArrayList<RegistroL>
                     if (callback != null) {
                         callback.horasRecibido2(x);
                     }
-                    var miAdapter = AdaptadorHorasExtra(rhorasextra, this)
+                    val miAdapter = AdaptadorHorasExtra(rhorasextra, this)
                     miRecyclerView.adapter = miAdapter
                 } else {
                     Log.e("wh", "Error getting documents.", task.exception)
@@ -199,14 +197,14 @@ class HorasExtra : AppCompatActivity(), NavigationView.OnNavigationItemSelectedL
     override fun onNavigationItemSelected(@NonNull menuItem: MenuItem): Boolean {
         val bundle:Bundle? = intent.extras
         val email = bundle?.getString("email").toString()
-        when (menuItem.itemId) {
-            R.id.opDatos -> intenMenu = Intent(this,DatosUsuario::class.java).apply { putExtra("email",email); putExtra("Mod","Modificar") }
-            R.id.opJornada -> intenMenu = Intent(this,RegistroLaboral::class.java).apply { putExtra("email",email) }
-            R.id.opExtra -> intenMenu = Intent(this,HorasExtra::class.java).apply { putExtra("email",email) }
-            R.id.opCalendario -> intenMenu = Intent(this,Calendario::class.java).apply { putExtra("email",email) }
-            R.id.opSolicitar -> intenMenu = Intent(this,SolicitarDias::class.java).apply { putExtra("email",email) }
-            R.id.opJustifi -> intenMenu = Intent(this,Justificante::class.java).apply { putExtra("email",email) }
-            R.id.opNotifi -> intenMenu = Intent(this,Notificacion::class.java).apply { putExtra("email",email) }
+        intenMenu = when (menuItem.itemId) {
+            R.id.opDatos -> Intent(this,DatosUsuario::class.java).apply { putExtra("email",email); putExtra("Mod","Modificar") }
+            R.id.opJornada -> Intent(this,RegistroLaboral::class.java).apply { putExtra("email",email) }
+            R.id.opExtra -> Intent(this,HorasExtra::class.java).apply { putExtra("email",email) }
+            R.id.opCalendario -> Intent(this,Calendario::class.java).apply { putExtra("email",email) }
+            R.id.opSolicitar -> Intent(this,SolicitarDias::class.java).apply { putExtra("email",email) }
+            R.id.opJustifi -> Intent(this,Justificante::class.java).apply { putExtra("email",email) }
+            R.id.opNotifi -> Intent(this,Notificacion::class.java).apply { putExtra("email",email) }
             else -> throw IllegalArgumentException("menu option not implemented!!")
         }
         binding.drawerLayout.closeDrawer(GravityCompat.START)

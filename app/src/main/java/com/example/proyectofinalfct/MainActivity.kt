@@ -1,22 +1,18 @@
 package com.example.proyectofinalfct
 
 import android.content.Intent
-import android.icu.text.UnicodeSetSpanner
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.TextUtils.isEmpty
 import androidx.appcompat.app.AlertDialog
-import androidx.core.text.toHtml
-import androidx.core.text.trimmedLength
 import com.example.proyectofinalfct.databinding.ActivityMainBinding
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-//import kotlinx.android.synthetic.main.activity_main.*
+
 
 
 class MainActivity : AppCompatActivity() {
-    lateinit var binding: ActivityMainBinding
+    private lateinit var binding: ActivityMainBinding
     private val db = FirebaseFirestore.getInstance() //Variable con la que accederemos a Firestore. Será una instancia a la bd.
 
 
@@ -38,11 +34,11 @@ class MainActivity : AppCompatActivity() {
                     if (it.isSuccessful){
                         irRegistro(it.result?.user?.email?:"")  //Esto de los interrogantes es por si está vacío el email. se envia a recoger los datos del usuario
                     } else {
-                        showAlert("Se ha producido un error registrando al usuario")
+                        showAlert(R.string.Login_Error_1)
                     }
                 }
             }else{
-                showAlert("Hay campos en blanco")
+                showAlert(R.string.Login_Error_2)
             }
         }
 
@@ -53,7 +49,7 @@ class MainActivity : AppCompatActivity() {
                         irMenu()
                         //irHome(it.result?.user?.email?:"",ProviderType.BASIC)  //Esto de los interrogantes es por si está vacío el email.
                     } else {
-                        showAlert("Se ha producido un error autenticando al usuario")
+                        showAlert(R.string.Login_Error_3)
                     }
                 }
             }
@@ -81,7 +77,7 @@ class MainActivity : AppCompatActivity() {
         startActivity(homeIntent)
     }
 
-    private fun showAlert(t:String){
+    private fun showAlert(t:Int){
         val builder = AlertDialog.Builder(this)
         builder.setTitle("Error")
         builder.setMessage(t)

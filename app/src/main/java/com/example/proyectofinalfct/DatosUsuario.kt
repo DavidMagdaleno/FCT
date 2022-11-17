@@ -224,11 +224,13 @@ class DatosUsuario : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             desRef.listAll().addOnCompleteListener { lista ->
                 if (lista.isSuccessful){
                     for (i in lista.result.items) {
-                        i.getBytes(ONE_MEGABYTE).addOnCompleteListener() {
-                            if (it.isSuccessful) {
-                                val img = getBitmap(it.result)!!
-                                perfil.img = img
-                                binding.imgFoto.setImageBitmap(img)
+                        if (i.name.equals(perfil.nombre)){
+                            i.getBytes(ONE_MEGABYTE).addOnCompleteListener() {
+                                if (it.isSuccessful) {
+                                    val img = getBitmap(it.result)!!
+                                    perfil.img = img
+                                    binding.imgFoto.setImageBitmap(img)
+                                }
                             }
                         }
                     }

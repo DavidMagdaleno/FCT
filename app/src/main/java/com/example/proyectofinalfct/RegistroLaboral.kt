@@ -4,8 +4,7 @@ import Model.AJustificante
 import Model.Dias
 import Model.RegistroL
 import android.content.Intent
-import android.graphics.Bitmap
-import android.nfc.tech.NfcBarcode
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -27,25 +26,25 @@ import java.util.*
 
 
 class RegistroLaboral : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener{
-    lateinit var binding: ActivityRegistroLaboralBinding
+    private lateinit var binding: ActivityRegistroLaboralBinding
     private lateinit var intenMenu: Intent
     private var accion:Int=-1
 
-    var dni:String=""
-    var nombre:String=""
-    var ape:String=""
-    var dire:String=""
-    var nac:String=""
-    var f:String=""
-    var em:String=""
-    var rhoras = ArrayList<RegistroL>()
-    var NJustifi = ArrayList<AJustificante>()
-    var Sdias= ArrayList<Dias>()
+    private var dni:String=""
+    private var nombre:String=""
+    private var ape:String=""
+    private var dire:String=""
+    private var nac:String=""
+    private var f:String=""
+    private var em:String=""
+    private var rhoras = ArrayList<RegistroL>()
+    private var NJustifi = ArrayList<AJustificante>()
+    private var Sdias= ArrayList<Dias>()
 
-    val sdf = SimpleDateFormat("dd/MM/yyyy", Locale("es", "ES"))
-    val sdf2 = SimpleDateFormat("HH:mm:ss", Locale("es", "ES"))
-    val currentdate = sdf.format(Date())
-    val currenthour = sdf2.format(Date())
+    private val sdf = SimpleDateFormat("dd/MM/yyyy", Locale("es", "ES"))
+    private val sdf2 = SimpleDateFormat("HH:mm:ss", Locale("es", "ES"))
+    private val currentdate = sdf.format(Date())
+    private val currenthour = sdf2.format(Date())
 
 
     private val db = FirebaseFirestore.getInstance()
@@ -82,7 +81,7 @@ class RegistroLaboral : AppCompatActivity(), NavigationView.OnNavigationItemSele
 
 
 
-    fun RegistroOnline(){
+    private fun RegistroOnline(){
         val bundle:Bundle? = intent.extras
         val email = bundle?.getString("email").toString()
         db.collection("usuarios").document(email).get().addOnSuccessListener {
@@ -104,19 +103,19 @@ class RegistroLaboral : AppCompatActivity(), NavigationView.OnNavigationItemSele
             Toast.makeText(this, "Algo ha ido mal al recuperar",Toast.LENGTH_SHORT).show()
         }
     }
-    fun sacarRegistro(){
+    private fun sacarRegistro(){
         var contiene:Boolean=false
         try {
             recuperarRegistro(object : RolCallback {
                 @RequiresApi(Build.VERSION_CODES.N)
-                override fun horasRecibido(horasNuevo: ArrayList<RegistroL>) {
-                    rhoras = horasNuevo
-                    for (i in 0..rhoras.size-1){
-                        var x=rhoras[i] as kotlin.collections.HashMap<String, String>
+                override fun horasRecibido(h: ArrayList<RegistroL>) {
+                    rhoras = h
+                    for (i in 0 until rhoras.size){
+                        val x=rhoras[i] as kotlin.collections.HashMap<String, String>
                         if (rhoras.isNotEmpty()){
                             x.forEach { (key,value) ->
                                 if ((key.equals("horaFin") && value.equals("")) && (key.equals("fecha") && !value.equals(currentdate.toString())) ){
-                                    showAlert("Una jornada laboral anterior esta sin cerrar, por favor pongase en contacto con RRHH")
+                                    showAlert(R.string.Jornada_msg_3)
                                 }
                                 if (key.equals("fecha") && value.equals(currentdate.toString())){
                                         x.replace("horaFin", currenthour.toString())
@@ -139,15 +138,15 @@ class RegistroLaboral : AppCompatActivity(), NavigationView.OnNavigationItemSele
         }
     }
 
-    fun sacarRegistroQr(){
+    private fun sacarRegistroQr(){
         var contiene:Boolean=false
         try {
             recuperarRegistro(object : RolCallback {
                 @RequiresApi(Build.VERSION_CODES.N)
-                override fun horasRecibido(horasNuevo: ArrayList<RegistroL>) {
-                    rhoras = horasNuevo
-                    for (i in 0..rhoras.size-1){
-                        var x=rhoras[i] as kotlin.collections.HashMap<String, String>
+                override fun horasRecibido(h: ArrayList<RegistroL>) {
+                    rhoras = h
+                    for (i in 0 until rhoras.size){
+                        val x=rhoras[i] as kotlin.collections.HashMap<String, String>
                         if (rhoras.isNotEmpty()){
                             x.forEach { (key,value) ->
                                 if (key.equals("fecha") && value.equals(currentdate.toString())){
@@ -170,10 +169,10 @@ class RegistroLaboral : AppCompatActivity(), NavigationView.OnNavigationItemSele
     }
 
     fun GenerarQr(hi:String,hf:String){
-        var texto:String="Fecha:"+em+"-----"+hi+"-----"+hf
+        val texto:String="Fecha:"+em+"-----"+hi+"-----"+hf
         try {
-            var barcodeEncoder:BarcodeEncoder = BarcodeEncoder()
-            var bitmap = barcodeEncoder.encodeBitmap(texto,BarcodeFormat.QR_CODE,227,227)
+            val barcodeEncoder:BarcodeEncoder = BarcodeEncoder()
+            val bitmap = barcodeEncoder.encodeBitmap(texto,BarcodeFormat.QR_CODE,227,227)
             binding.imgQr.setImageBitmap(bitmap)
         }catch (e:Exception){
             e.printStackTrace()
@@ -185,12 +184,12 @@ class RegistroLaboral : AppCompatActivity(), NavigationView.OnNavigationItemSele
         fun horasRecibido(h: ArrayList<RegistroL>)
     }
 
-    fun recuperarRegistro( callback:RolCallback){
+    private fun recuperarRegistro( callback:RolCallback){
         db.collection("usuarios").document(em).get()
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     //poner los demas para recuperar todos los datos
-                    var x= task.result.data?.get("Registro") as ArrayList<RegistroL>
+                    val x= task.result.data?.get("Registro") as ArrayList<RegistroL>
                     if (callback != null) {
                         callback.horasRecibido(x);
                     }
@@ -202,7 +201,7 @@ class RegistroLaboral : AppCompatActivity(), NavigationView.OnNavigationItemSele
 
     fun guardado(email:String){
         //Se guardarán en modo HashMap (clave, valor).
-        var user = hashMapOf(
+        val user = hashMapOf(
             "DNI" to dni,
             "Nombre" to nombre,
             "Apellidos" to ape,
@@ -218,19 +217,27 @@ class RegistroLaboral : AppCompatActivity(), NavigationView.OnNavigationItemSele
             .document(email) //Será la clave del documento.
             .set(user).addOnSuccessListener {
                 //Toast.makeText(this, "Almacenado", Toast.LENGTH_SHORT).show()
-                if (accion==0){showAlert("Se ha iniciado la jornada laboral")}
-                if (accion==1){showAlert("Se ha completado la jornada laboral")}
+                if (accion==0){
+                    showAlert(R.string.Jornada_msg_1)
+                    binding.txtPrimer.text=binding.txtHora.text
+                    binding.txtPrimer.setBackgroundColor(Color.GREEN)
+                }
+                if (accion==1){
+                    showAlert(R.string.Jornada_msg_2)
+                    binding.txtSecond.text=binding.txtHora.text
+                    binding.txtSecond.setBackgroundColor(Color.GREEN)
+                }
                 //finish()
             }.addOnFailureListener{
                 Toast.makeText(this, "Ha ocurrido un error", Toast.LENGTH_SHORT).show()
             }
     }
 
-    private fun showAlert(txt:String){
+    private fun showAlert(txt:Int){
         val builder = AlertDialog.Builder(this)
-        builder.setTitle("NOTIFICACION")
+        builder.setTitle(R.string.Notificacion)
         builder.setMessage(txt)
-        builder.setPositiveButton("Aceptar",null)
+        builder.setPositiveButton(R.string.Accept,null)
         val dialog: AlertDialog = builder.create()
         dialog.show()
     }
@@ -246,14 +253,14 @@ class RegistroLaboral : AppCompatActivity(), NavigationView.OnNavigationItemSele
     override fun onNavigationItemSelected(@NonNull menuItem: MenuItem): Boolean {
         val bundle:Bundle? = intent.extras
         val email = bundle?.getString("email").toString()
-        when (menuItem.itemId) {
-            R.id.opDatos -> intenMenu = Intent(this,DatosUsuario::class.java).apply { putExtra("email",email); putExtra("Mod","Modificar") }
-            R.id.opJornada -> intenMenu = Intent(this,RegistroLaboral::class.java).apply { putExtra("email",email) }
-            R.id.opExtra -> intenMenu = Intent(this,HorasExtra::class.java).apply { putExtra("email",email) }
-            R.id.opCalendario -> intenMenu = Intent(this,Calendario::class.java).apply { putExtra("email",email) }
-            R.id.opSolicitar -> intenMenu = Intent(this,SolicitarDias::class.java).apply { putExtra("email",email) }
-            R.id.opJustifi -> intenMenu = Intent(this,Justificante::class.java).apply { putExtra("email",email) }
-            R.id.opNotifi -> intenMenu = Intent(this,Notificacion::class.java).apply { putExtra("email",email) }
+        intenMenu = when (menuItem.itemId) {
+            R.id.opDatos -> Intent(this,DatosUsuario::class.java).apply { putExtra("email",email); putExtra("Mod","Modificar") }
+            R.id.opJornada -> Intent(this,RegistroLaboral::class.java).apply { putExtra("email",email) }
+            R.id.opExtra -> Intent(this,HorasExtra::class.java).apply { putExtra("email",email) }
+            R.id.opCalendario -> Intent(this,Calendario::class.java).apply { putExtra("email",email) }
+            R.id.opSolicitar -> Intent(this,SolicitarDias::class.java).apply { putExtra("email",email) }
+            R.id.opJustifi -> Intent(this,Justificante::class.java).apply { putExtra("email",email) }
+            R.id.opNotifi -> Intent(this,Notificacion::class.java).apply { putExtra("email",email) }
             else -> throw IllegalArgumentException("menu option not implemented!!")
         }
         binding.drawerLayout.closeDrawer(GravityCompat.START)

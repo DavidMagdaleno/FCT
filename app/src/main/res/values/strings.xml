@@ -1,7 +1,56 @@
 <resources>
-    <string name="app_name">ProyectoFinalFCT</string>
+    <string name="app_name" translatable="false">ProyectoFinalFCT</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="cancel">0</string>
-    <string name="ok">1</string>
+    <string name="cancel" translatable="false">0</string>
+    <string name="ok" translatable="false">1</string>
+    <string name="Alert_justify_1">Proof uploaded successfully</string>
+    <string name="Notificacion">NOTIFICACION</string>
+    <string name="Alert_justify_2">No file attached</string>
+    <string name="Accept">Accept</string>
+    <string name="Cancel_txt">Cancel</string>
+    <string name="Login_Error_1">An error occurred registering the user</string>
+    <string name="Login_Error_2">There are blank fields</string>
+    <string name="Login_Error_3">An error occurred authenticating the user</string>
+    <string name="Jornada_msg_1">The working day has started</string>
+    <string name="Jornada_msg_2">The working day has been completed</string>
+    <string name="Jornada_msg_3">A previous business day is not closed, please contact HR</string>
+    <string name="Dias_MSG_1">Successfully requested days</string>
+    <string name="Dias_MSG_2">You have not selected the dates</string>
+    <string name="Dias_MSG_3">The End Date cannot be earlier than the Start Date.</string>
+    <string name="Dias_MSG_4">The Start Date cannot be earlier than the current date</string>
+    <string name="Dias_MSG_5">You have selected more than 30 vacation days</string>
+    <string name="Dias_MSG_6">You have exceeded the maximum number of vacation days</string>
+    <string name="Dias_MSG_7">You can only request one day of your own business separately</string>
+    <string name="Dias_MSG_8">Select the type of days you want to request</string>
+    <string name="datos_personales">Personal information</string>
+    <string name="solicitar_das">Request Days</string>
+    <string name="calendario">Calendar</string>
+    <string name="jornada">Working day</string>
+    <string name="horas_extra">Extra hours</string>
+    <string name="notificaciones">Notifications</string>
+    <string name="justificante">Supporting document</string>
+    <string name="name">Name</string>
+    <string name="surname">Surname</string>
+    <string name="address">Address</string>
+    <string name="birth_date">Birth Date</string>
+    <string name="upload_img">Upload Image</string>
+    <string name="save">Save</string>
+    <string name="back">Back</string>
+    <string name="month">Month:</string>
+    <string name="day_justify">Select days to justify</string>
+    <string name="F_ini">Start date:</string>
+    <string name="F_fin">End date:</string>
+    <string name="Upload_document">Upload Document</string>
+    <string name="user">User</string>
+    <string name="pass">Password</string>
+    <string name="F_actual">Current date:</string>
+    <string name="H_actual">Current time:</string>
+    <string name="jornada_online">Register Online Day</string>
+    <string name="qr">Generate Qr</string>
+    <string name="a_propios">Personal affairs</string>
+    <string name="holidays">Holidays</string>
+    <string name="s_day">Select Days</string>
+    <string name="solicitar">Send</string>
+    <string name="date">Date:</string>
 </resources>

@@ -42,18 +42,18 @@ class Calendario : AppCompatActivity(), NavigationView.OnNavigationItemSelectedL
         sacarRegistro()
     }
 
-    fun sacarRegistro(){
-        var dias:Int=0
-        var me:String=""
-        var d:String=""
-        var y:String=""
+    private fun sacarRegistro(){
+        var dias=0
+        var me=""
+        var d=""
+        var y=""
         try {
             recuperarRegistro(object : RolCallback {
                 @RequiresApi(Build.VERSION_CODES.N)
-                override fun DiasRecibido(DiasNuevo: ArrayList<Dias>) {
+                override fun diasRecibido(DiasNuevo: ArrayList<Dias>) {
                     sDias = DiasNuevo
-                    for (i in 0..sDias.size-1){
-                        var x=sDias[i] as HashMap<String, String>
+                    for (i in 0 until sDias.size){
+                        val x=sDias[i] as HashMap<String, String>
                         if (sDias.isNotEmpty()){
                             if (x.getValue("tipo").equals("Asuntos Propios")){
                                 me=x.get("fechaIni")!!.removeRange(0,3).removeRange(2,7)
@@ -100,10 +100,10 @@ class Calendario : AppCompatActivity(), NavigationView.OnNavigationItemSelectedL
     }
 
     interface RolCallback {
-        fun DiasRecibido(h: ArrayList<Dias>)
+        fun diasRecibido(DiasNuevo: ArrayList<Dias>)
     }
 
-    fun recuperarRegistro( callback:RolCallback){
+    private fun recuperarRegistro( callback:RolCallback){
         val bundle:Bundle? = intent.extras
         val email = bundle?.getString("email").toString()
 
@@ -111,9 +111,9 @@ class Calendario : AppCompatActivity(), NavigationView.OnNavigationItemSelectedL
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     //poner los demas para recuperar todos los datos
-                    var x= task.result.data?.get("Dias") as ArrayList<Dias>
+                    val x= task.result.data?.get("Dias") as ArrayList<Dias>
                     if (callback != null) {
-                        callback.DiasRecibido(x);
+                        callback.diasRecibido(x);
                     }
                 } else {
                     Log.e("wh", "Error getting documents.", task.exception)
@@ -129,13 +129,13 @@ class Calendario : AppCompatActivity(), NavigationView.OnNavigationItemSelectedL
         return dias
     }
 
-    fun stringtodate(t:String): Date {
+    private fun stringtodate(t:String): Date {
         val formatter = SimpleDateFormat("dd/MM/yyyy", Locale("es", "ES"))
         val datep = formatter.parse(t)
         return datep
     }
 
-    fun pasarMes(m:String, d:Int):String{
+    private fun pasarMes(m:String, d:Int):String{
         var me:String=""
         if ((m.toInt())%2==0){
             if (m.toInt()==2){
@@ -166,14 +166,14 @@ class Calendario : AppCompatActivity(), NavigationView.OnNavigationItemSelectedL
     override fun onNavigationItemSelected(@NonNull menuItem: MenuItem): Boolean {
         val bundle:Bundle? = intent.extras
         val email = bundle?.getString("email").toString()
-        when (menuItem.itemId) {
-            R.id.opDatos -> intenMenu = Intent(this,DatosUsuario::class.java).apply { putExtra("email",email); putExtra("Mod","Modificar") }
-            R.id.opJornada -> intenMenu = Intent(this,RegistroLaboral::class.java).apply { putExtra("email",email) }
-            R.id.opExtra -> intenMenu = Intent(this,HorasExtra::class.java).apply { putExtra("email",email) }
-            R.id.opCalendario -> intenMenu = Intent(this,Calendario::class.java).apply { putExtra("email",email) }
-            R.id.opSolicitar -> intenMenu = Intent(this,SolicitarDias::class.java).apply { putExtra("email",email) }
-            R.id.opJustifi -> intenMenu = Intent(this,Justificante::class.java).apply { putExtra("email",email) }
-            R.id.opNotifi -> intenMenu = Intent(this,Notificacion::class.java).apply { putExtra("email",email) }
+        intenMenu = when (menuItem.itemId) {
+            R.id.opDatos -> Intent(this,DatosUsuario::class.java).apply { putExtra("email",email); putExtra("Mod","Modificar") }
+            R.id.opJornada -> Intent(this,RegistroLaboral::class.java).apply { putExtra("email",email) }
+            R.id.opExtra -> Intent(this,HorasExtra::class.java).apply { putExtra("email",email) }
+            R.id.opCalendario -> Intent(this,Calendario::class.java).apply { putExtra("email",email) }
+            R.id.opSolicitar -> Intent(this,SolicitarDias::class.java).apply { putExtra("email",email) }
+            R.id.opJustifi -> Intent(this,Justificante::class.java).apply { putExtra("email",email) }
+            R.id.opNotifi -> Intent(this,Notificacion::class.java).apply { putExtra("email",email) }
             else -> throw IllegalArgumentException("menu option not implemented!!")
         }
         binding.drawerLayout.closeDrawer(GravityCompat.START)

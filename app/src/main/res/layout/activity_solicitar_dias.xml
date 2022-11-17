@@ -68,7 +68,7 @@ tools:openDrawer="start">
                     android:layout_width="116dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Asuntos Propios"
+                    android:text="@string/a_propios"
                     android:textAlignment="viewStart" />
 
                 <CheckBox
@@ -76,7 +76,7 @@ tools:openDrawer="start">
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Vacaciones" />
+                    android:text="@string/holidays" />
 
                 <TextView
                     android:id="@+id/textView11"
@@ -91,7 +91,7 @@ tools:openDrawer="start">
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
-                android:text="Seleccionar Días" />
+                android:text="@string/s_day" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -104,7 +104,7 @@ tools:openDrawer="start">
                     android:layout_width="73dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Fecha Inicio:"
+                    android:text="@string/F_ini"
                     android:textAlignment="center"
                     android:textSize="16sp"
                     android:textStyle="bold" />
@@ -129,7 +129,7 @@ tools:openDrawer="start">
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Fecha Fin:"
+                    android:text="@string/F_fin"
                     android:textAlignment="center"
                     android:textSize="16sp"
                     android:textStyle="bold" />
@@ -149,7 +149,7 @@ tools:openDrawer="start">
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="40dp"
-                android:text="Solicitar" />
+                android:text="@string/solicitar" />
 
         </LinearLayout>
 

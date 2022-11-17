@@ -2,19 +2,14 @@ package com.example.proyectofinalfct
 
 import Model.AJustificante
 import Model.Dias
-import Model.ImgPerfil
 import Model.RegistroL
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
-import android.view.View
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import android.widget.CalendarView
 import android.widget.EditText
-import android.widget.Spinner
 import android.widget.Toast
 import androidx.annotation.NonNull
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -22,36 +17,32 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import com.example.proyectofinalfct.databinding.ActivityJustificanteBinding
-import com.google.android.gms.tasks.Task
 import com.google.android.material.navigation.NavigationView
-import com.google.firebase.auth.AuthResult
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
-import java.text.SimpleDateFormat
 import java.util.*
 
 class Justificante : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
-    lateinit var binding: ActivityJustificanteBinding
+    private lateinit var binding: ActivityJustificanteBinding
     private lateinit var intenMenu: Intent
     private val File=1
     private var archivo=false
     private val database= Firebase.storage
-    val ref2=database.reference
+    private val ref2=database.reference
     private val db = FirebaseFirestore.getInstance()
 
-    var dni:String=""
-    var nombre:String=""
-    var ape:String=""
-    var dire:String=""
-    var nac:String=""
-    var f:String=""
-    var rhoras = ArrayList<RegistroL>()
-    var arch = ArrayList<AJustificante>()
-    var Sdias= ArrayList<Dias>()
-    //var arch:AJustificante= AJustificante("","","")
+    private var dni:String=""
+    private var nombre:String=""
+    private var ape:String=""
+    private var dire:String=""
+    private var nac:String=""
+    private var f:String=""
+    private var rhoras = ArrayList<RegistroL>()
+    private var arch = ArrayList<AJustificante>()
+    private var Sdias= ArrayList<Dias>()
 
-    var NomArch:String=""
+    private var NomArch:String=""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -114,51 +105,27 @@ class Justificante : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     //perfil.nombre = FileUri!!.lastPathSegment.toString()
                     NomArch=FileUri!!.lastPathSegment.toString()
                     Recuperar()
-                    //arch.FechaIni=binding.etxtFechaIni.text.toString()
-                    //arch.FechaFin=binding.etxtFechaFin.text.toString()
-                    //arch.nombre=FileUri!!.lastPathSegment.toString()
-                    //arch.Fecha=binding.calendarView.date.toString()----------------------------------------------------------
-                    /*try {
-                        mostarimagenes(object : DatosUsuario.RolCallback {
-                            override fun imagenes(imaNuevo: ImgPerfil) {
-                                //var miAdapter = AdaptadorFotos(imaNuevo, this@Galeria)
-                                //miRecyclerView.adapter = miAdapter
-                            }
-                        })
-
-                    } catch (e: InterruptedException) {
-                        e.printStackTrace()
-                    }*/
-                    // taskSnapshot.metadata contains file metadata such as size, content-type, etc.
-                    // ...
                 }
-
             }
         }
-
-        //if (requestCode==cameraRequest){
-        //val photo:Bitmap=data?.extras?.get("data") as Bitmap
-        //binding.imgFoto.setImageBitmap(photo)
-        //}
     }
 
-    fun DialogLogin(txt: EditText): Boolean {
+    private fun DialogLogin(txt: EditText): Boolean {
         val dialogo: android.app.AlertDialog.Builder = android.app.AlertDialog.Builder(this)
         val Myview=layoutInflater.inflate(R.layout.item_calendar, null)
-        var calendar = Myview.findViewById<CalendarView>(R.id.calendarView)
+        val calendar = Myview.findViewById<CalendarView>(R.id.calendarView)
         dialogo.setView(Myview)
-        //val adaptador = ArrayAdapter(this, R.layout.item_spiner,R.id.txtOpcion,tipoRol)
-        //srol.adapter = adaptador
+
         calendar.setOnDateChangeListener(object : CalendarView.OnDateChangeListener{
             override fun onSelectedDayChange(view: CalendarView,year: Int, month: Int, dayOfMonth: Int) {
                 txt.setText(dayOfMonth.toString()+"/"+(month+1).toString()+"/"+year.toString())
             }
         })
-        dialogo.setPositiveButton("Entrar",
+        dialogo.setPositiveButton(R.string.Accept,
             DialogInterface.OnClickListener { dialog, which ->
 
             })
-        dialogo.setNegativeButton("Salir",
+        dialogo.setNegativeButton(R.string.Cancel_txt,
             DialogInterface.OnClickListener { dialog, which ->
 
                 dialog.dismiss()
@@ -167,7 +134,7 @@ class Justificante : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         return true
     }
 
-    fun Recuperar(){
+    private fun Recuperar(){
         val bundle:Bundle? = intent.extras
         val email = bundle?.getString("email").toString()
         db.collection("usuarios").document(email).get().addOnSuccessListener {
@@ -189,7 +156,7 @@ class Justificante : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             Toast.makeText(this, "Algo ha ido mal al recuperar",Toast.LENGTH_SHORT).show()
         }
     }
-    fun Guardar(){
+    private fun Guardar(){
         val bundle:Bundle? = intent.extras
         val email = bundle?.getString("email").toString()
         arch.add(AJustificante(binding.etxtFechaIni.text.toString(),binding.etxtFechaFin.text.toString(),NomArch))
@@ -208,7 +175,7 @@ class Justificante : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         db.collection("usuarios")//añade o sebreescribe
             .document(email) //Será la clave del documento.
             .set(user).addOnSuccessListener {
-                binding.txtResult.text="Justificante subido con exito"
+                binding.txtResult.setText(R.string.Alert_justify_1)
                 //Toast.makeText(this, "Almacenado", Toast.LENGTH_SHORT).show()
             }.addOnFailureListener{
                 Toast.makeText(this, "Ha ocurrido un error", Toast.LENGTH_SHORT).show()
@@ -217,9 +184,9 @@ class Justificante : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private fun showAlert(){
         val builder = AlertDialog.Builder(this)
-        builder.setTitle("NOTIFICACION")
-        builder.setMessage("No se ha adjuntado ningún archivo")
-        builder.setPositiveButton("Aceptar",null)
+        builder.setTitle(R.string.Notificacion)
+        builder.setMessage(R.string.Alert_justify_2)
+        builder.setPositiveButton(R.string.Accept,null)
         val dialog: AlertDialog = builder.create()
         dialog.show()
     }
@@ -235,14 +202,14 @@ class Justificante : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onNavigationItemSelected(@NonNull menuItem: MenuItem): Boolean {
         val bundle:Bundle? = intent.extras
         val email = bundle?.getString("email").toString()
-        when (menuItem.itemId) {
-            R.id.opDatos -> intenMenu = Intent(this,DatosUsuario::class.java).apply { putExtra("email",email); putExtra("Mod","Modificar") }
-            R.id.opJornada -> intenMenu = Intent(this,RegistroLaboral::class.java).apply { putExtra("email",email) }
-            R.id.opExtra -> intenMenu = Intent(this,HorasExtra::class.java).apply { putExtra("email",email) }
-            R.id.opCalendario -> intenMenu = Intent(this,Calendario::class.java).apply { putExtra("email",email) }
-            R.id.opSolicitar -> intenMenu = Intent(this,SolicitarDias::class.java).apply { putExtra("email",email) }
-            R.id.opJustifi -> intenMenu = Intent(this,Justificante::class.java).apply { putExtra("email",email) }
-            R.id.opNotifi -> intenMenu = Intent(this,Notificacion::class.java).apply { putExtra("email",email) }
+        intenMenu = when (menuItem.itemId) {
+            R.id.opDatos -> Intent(this,DatosUsuario::class.java).apply { putExtra("email",email); putExtra("Mod","Modificar") }
+            R.id.opJornada -> Intent(this,RegistroLaboral::class.java).apply { putExtra("email",email) }
+            R.id.opExtra -> Intent(this,HorasExtra::class.java).apply { putExtra("email",email) }
+            R.id.opCalendario -> Intent(this,Calendario::class.java).apply { putExtra("email",email) }
+            R.id.opSolicitar -> Intent(this,SolicitarDias::class.java).apply { putExtra("email",email) }
+            R.id.opJustifi -> Intent(this,Justificante::class.java).apply { putExtra("email",email) }
+            R.id.opNotifi -> Intent(this,Notificacion::class.java).apply { putExtra("email",email) }
             else -> throw IllegalArgumentException("menu option not implemented!!")
         }
         binding.drawerLayout.closeDrawer(GravityCompat.START)

@@ -14,7 +14,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Fecha:"
+            android:text="@string/date"
             android:textAlignment="center"
             android:textSize="16sp"
             android:textStyle="bold" />
@@ -40,7 +40,7 @@
             android:layout_width="49dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Horas Extra:"
+            android:text="@string/horas_extra"
             android:textAlignment="center"
             android:textSize="16sp"
             android:textStyle="bold" />

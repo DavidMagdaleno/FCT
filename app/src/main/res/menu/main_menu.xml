@@ -6,31 +6,31 @@ tools:showIn="navigation_view">
     <group android:checkableBehavior="single">
         <item
         android:id="@+id/opDatos"
-        android:title="Datos Personales" />
+        android:title="@string/datos_personales" />
     </group>
 
     <item
         android:id="@+id/opSolicitar"
-        android:title="Solicitar Días" />
+        android:title="@string/solicitar_das" />
 
     <item
         android:id="@+id/opCalendario"
-        android:title="Calendario" />
+        android:title="@string/calendario" />
 
     <item
         android:id="@+id/opJornada"
-        android:title="Jornada" />
+        android:title="@string/jornada" />
 
     <item
         android:id="@+id/opExtra"
-        android:title="Horas Extra" />
+        android:title="@string/horas_extra" />
 
     <item
         android:id="@+id/opNotifi"
-        android:title="Notificaciones" />
+        android:title="@string/notificaciones" />
 
     <item
         android:id="@+id/opJustifi"
-        android:title="Justificante" />
+        android:title="@string/justificante" />
 
 </menu>

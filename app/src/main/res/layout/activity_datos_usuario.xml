@@ -64,7 +64,7 @@ tools:openDrawer="start">
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:hint="Name"
+                android:hint="@string/name"
                 android:inputType="textPersonName" />
 
             <EditText
@@ -72,7 +72,7 @@ tools:openDrawer="start">
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:hint="Surname"
+                android:hint="@string/surname"
                 android:inputType="textPersonName" />
 
             <EditText
@@ -80,7 +80,7 @@ tools:openDrawer="start">
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:hint="Address"
+                android:hint="@string/address"
                 android:inputType="textPersonName" />
 
             <EditText
@@ -88,7 +88,7 @@ tools:openDrawer="start">
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:hint="Birth date"
+                android:hint="@string/birth_date"
                 android:inputType="date" />
 
             <LinearLayout
@@ -102,7 +102,7 @@ tools:openDrawer="start">
                     android:layout_height="wrap_content"
                     android:layout_marginTop="40dp"
                     android:layout_weight="1"
-                    android:text="Upload Image" />
+                    android:text="@string/upload_img" />
 
                 <ImageView
                     android:id="@+id/imgFoto"
@@ -127,14 +127,14 @@ tools:openDrawer="start">
                     android:layout_height="wrap_content"
                     android:layout_marginTop="50dp"
                     android:layout_marginBottom="20dp"
-                    android:text="Save" />
+                    android:text="@string/save" />
 
                 <Button
                     android:id="@+id/btnVolver"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:onClick="volver"
-                    android:text="Back" />
+                    android:text="@string/back" />
             </LinearLayout>
 
         </LinearLayout>
