@@ -128,7 +128,7 @@ class SolicitarDias : AppCompatActivity(), NavigationView.OnNavigationItemSelect
 
     private fun comprobaryGuardar(){
         if (!binding.txtFini.text.isNullOrEmpty() && !binding.txtFFin.text.isNullOrEmpty()){
-            if (diferenciaHoras(binding.txtFini.text.toString(),binding.txtFFin.text.toString(),null)>0){
+            if (diferenciaHoras(binding.txtFini.text.toString(),binding.txtFFin.text.toString(),null)>=0){
                 if (diferenciaHoras(binding.txtFini.text.toString(),Date().toString(),Date())<0){
                     if (binding.chAsuntos.isChecked){
                         if (binding.txtFini.text==binding.txtFFin.text){

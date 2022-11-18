@@ -160,6 +160,7 @@ class Justificante : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val bundle:Bundle? = intent.extras
         val email = bundle?.getString("email").toString()
         arch.add(AJustificante(binding.etxtFechaIni.text.toString(),binding.etxtFechaFin.text.toString(),NomArch))
+        //Toast.makeText(this, "añadido",Toast.LENGTH_SHORT).show()
         //Se guardarán en modo HashMap (clave, valor).
         var user = hashMapOf(
             "DNI" to dni,

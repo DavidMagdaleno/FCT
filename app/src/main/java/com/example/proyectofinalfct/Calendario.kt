@@ -8,9 +8,11 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.annotation.NonNull
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AlertDialog
 import androidx.core.view.GravityCompat
 import com.example.proyectofinalfct.databinding.ActivityCalendarioBinding
 import com.google.android.material.navigation.NavigationView
@@ -56,7 +58,7 @@ class Calendario : AppCompatActivity(), NavigationView.OnNavigationItemSelectedL
                         val x=sDias[i] as HashMap<String, String>
                         if (sDias.isNotEmpty()){
                             if (x.getValue("tipo").equals("Asuntos Propios")){
-                                me=x.get("fechaIni")!!.removeRange(0,3).removeRange(2,7)
+                                me=x.get("fechaIni")!!.replaceAfterLast("/","").replaceBefore("/","").substringAfter("/").substringBefore("/")
                                 y=x.get("fechaIni")!!.substringAfterLast("/")
                                 d=x.get("fechaIni")!!.substringBefore("/")
                                 if (x.getValue("estado").equals("Pendiente")){
@@ -71,21 +73,24 @@ class Calendario : AppCompatActivity(), NavigationView.OnNavigationItemSelectedL
                             }
                             if (x.getValue("tipo").equals("Vacaciones")){
                                 dias=diferenciaHoras(x.getValue("fechaIni"),x.getValue("fechaFin")).toInt()
-                                me=x.get("fechaIni")!!.removeRange(0,3).removeRange(2,7)
+                                me=x.get("fechaIni")!!.replaceAfterLast("/","").replaceBefore("/","").substringAfter("/").substringBefore("/")
                                 y=x.get("fechaIni")!!.substringAfterLast("/")
                                 d=x.get("fechaIni")!!.substringBefore("/")
                                 if (x.getValue("estado").equals("Pendiente")){
                                     for (i in 0..dias){
+                                        showAlert("p: "+(d.toInt()+i))
                                         binding.calendar.markDate(y.toInt(), pasarMes(me,d.toInt()+i).toInt(), d.toInt()+i).setMarkedStyle(MarkStyle.BACKGROUND,Color.YELLOW)
                                     }
                                 }
                                 if (x.getValue("estado").equals("Aprobado")){
                                     for (i in 0..dias){
+                                        showAlert("a: "+(d.toInt()+i))
                                         binding.calendar.markDate(y.toInt(), pasarMes(me,d.toInt()+i).toInt(), d.toInt()+i).setMarkedStyle(MarkStyle.BACKGROUND,Color.GREEN)
                                     }
                                 }
                                 if (x.getValue("estado").equals("Denegado")){
                                     for (i in 0..dias){
+                                        showAlert("d: "+(d.toInt()+i))
                                         binding.calendar.markDate(y.toInt(), pasarMes(me,d.toInt()+i).toInt(), d.toInt()+i).setMarkedStyle(MarkStyle.BACKGROUND,Color.RED)
                                     }
                                 }
@@ -134,22 +139,36 @@ class Calendario : AppCompatActivity(), NavigationView.OnNavigationItemSelectedL
         val datep = formatter.parse(t)
         return datep
     }
+    private fun showAlert(t:String){
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle(R.string.Notificacion)
+        builder.setMessage(t)
+        builder.setPositiveButton(R.string.Accept,null)
+        val dialog: AlertDialog = builder.create()
+        dialog.show()
+    }
 
     private fun pasarMes(m:String, d:Int):String{
         var me:String=""
         if ((m.toInt())%2==0){
-            if (m.toInt()==2){
+            me = if (m.toInt()==2){
                 if (d>28){
-                    me=(m.toInt()+1).toString()
+                    (m.toInt()+1).toString()
+                }else{
+                    m
                 }
             }else{
                 if (d>30){
-                    me=(m.toInt()+1).toString()
+                    (m.toInt()+1).toString()
+                }else{
+                    m
                 }
             }
         }else{
-            if (d>31){
-                me=(m.toInt()+1).toString()
+            me = if (d>31){
+                (m.toInt()+1).toString()
+            }else{
+                m
             }
         }
         return me

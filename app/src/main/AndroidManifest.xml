@@ -27,7 +27,7 @@
 
         <activity
             android:name=".Splashscreen"
-            android:exported="true"></activity>
+            android:exported="true" />
         <activity
             android:name=".Calendario"
             android:exported="false">
