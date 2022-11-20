@@ -29,6 +29,7 @@ class RegistroLaboral : AppCompatActivity(), NavigationView.OnNavigationItemSele
     private lateinit var binding: ActivityRegistroLaboralBinding
     private lateinit var intenMenu: Intent
     private var accion:Int=-1
+    private var Rbarra:Int=-1
 
     private var dni:String=""
     private var nombre:String=""
@@ -66,10 +67,14 @@ class RegistroLaboral : AppCompatActivity(), NavigationView.OnNavigationItemSele
         val email = bundle?.getString("email").toString()
         em=email
 
+
         binding.txtFecha.text=currentdate.toString()
         binding.txtHora.text=currenthour.toString()
 
+        RegistroOnline()
+
         binding.btnRegistro.setOnClickListener {
+            //Rbarra=0
             RegistroOnline()
         }
 
@@ -96,9 +101,6 @@ class RegistroLaboral : AppCompatActivity(), NavigationView.OnNavigationItemSele
             NJustifi=it.get("Justificante") as ArrayList<AJustificante>
             Sdias=it.get("Dias") as ArrayList<Dias>
             sacarRegistro()
-
-            //Toast.makeText(this, "Recuperado",Toast.LENGTH_SHORT).show()
-
         }.addOnFailureListener{
             Toast.makeText(this, "Algo ha ido mal al recuperar",Toast.LENGTH_SHORT).show()
         }
@@ -111,17 +113,28 @@ class RegistroLaboral : AppCompatActivity(), NavigationView.OnNavigationItemSele
                 override fun horasRecibido(h: ArrayList<RegistroL>) {
                     rhoras = h
                     for (i in 0 until rhoras.size){
-                        val x=rhoras[i] as kotlin.collections.HashMap<String, String>
+                        val x=rhoras[i] as HashMap<String, String>
                         if (rhoras.isNotEmpty()){
                             x.forEach { (key,value) ->
                                 if ((key.equals("horaFin") && value.equals("")) && (key.equals("fecha") && !value.equals(currentdate.toString())) ){
                                     showAlert(R.string.Jornada_msg_3)
                                 }
                                 if (key.equals("fecha") && value.equals(currentdate.toString())){
-                                        x.replace("horaFin", currenthour.toString())
                                     contiene=true
-                                    accion=1
-                                    guardado(em)
+                                    if (Rbarra!=0){
+                                        binding.txtPrimer.text=x.getValue("horaIni")
+                                        binding.txtPrimer.setBackgroundColor(Color.GREEN)
+                                        if (!x.getValue("horaFin").equals("")){
+                                            binding.txtSecond.text=x.getValue("horaFin")
+                                            binding.txtSecond.setBackgroundColor(Color.GREEN)
+                                        }
+                                        Rbarra=0
+                                    }else{
+                                        x.replace("horaFin", currenthour.toString())
+                                        contiene=true
+                                        accion=1
+                                        guardado(em)
+                                    }
                                 }
                             }
                         }
@@ -158,7 +171,6 @@ class RegistroLaboral : AppCompatActivity(), NavigationView.OnNavigationItemSele
                         }
                     }
                     if (!contiene){
-                        //rhoras.add(RegistroL(currentdate.toString(),currenthour.toString(),""))
                         GenerarQr("horaIni:"+currenthour.toString(),"horaFin:"+"")
                     }
                 }
@@ -226,6 +238,7 @@ class RegistroLaboral : AppCompatActivity(), NavigationView.OnNavigationItemSele
                     showAlert(R.string.Jornada_msg_2)
                     binding.txtSecond.text=binding.txtHora.text
                     binding.txtSecond.setBackgroundColor(Color.GREEN)
+                    Rbarra=-1
                 }
                 //finish()
             }.addOnFailureListener{

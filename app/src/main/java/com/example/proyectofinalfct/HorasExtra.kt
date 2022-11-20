@@ -3,6 +3,7 @@ package com.example.proyectofinalfct
 import Adaptadores.AdaptadorHorasExtra
 import Model.HExtra
 import Model.RegistroL
+import Opciones.Opcion
 import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
@@ -95,7 +96,7 @@ class HorasExtra : AppCompatActivity(), NavigationView.OnNavigationItemSelectedL
                     for (i in 0..rhoras.size-1){
                         val x=rhoras[i] as kotlin.collections.HashMap<String, String>
                         if (rhoras.isNotEmpty()){
-                            val me=x.get("fecha")!!.removeRange(0,3).removeRange(2,7)
+                            val me=x.get("fecha")!!.replaceAfterLast("/","").replaceBefore("/","").substringAfter("/").substringBefore("/")
                             val y=x.get("fecha")!!.substringAfterLast("/")
                             if (y.equals(currentyear)){
                                 if (me!=repme){
@@ -143,11 +144,11 @@ class HorasExtra : AppCompatActivity(), NavigationView.OnNavigationItemSelectedL
                     for (i in 0..rhoras.size-1){
                         val x=rhoras[i] as kotlin.collections.HashMap<String, String>
                         if (rhoras.isNotEmpty()){
-                            val me=x.get("fecha")!!.removeRange(0,3).removeRange(2,7)
+                            val me=x.get("fecha")!!.replaceAfterLast("/","").replaceBefore("/","").substringAfter("/").substringBefore("/")
                             val y=x.get("fecha")!!.substringAfterLast("/")
                             if ((me==meop) && (y.equals(currentyear))){
                                 if (!x.get("horaFin").equals("")){
-                                    totalhExtra= ((stringtodate(x.get("horaFin")!!).hours.toInt())-(stringtodate(x.get("horaIni")!!).hours.toInt()))-8
+                                    totalhExtra= ((stringtodate(x.get("horaFin")!!).hours.toInt())-(stringtodate(x.get("horaIni")!!).hours.toInt()))-Opcion.HORASLABORALES
                                     if (totalhExtra<0){ totalhExtra = 0 }
                                 }else{
                                     totalhExtra=0

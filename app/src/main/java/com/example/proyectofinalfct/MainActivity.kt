@@ -47,7 +47,6 @@ class MainActivity : AppCompatActivity() {
                 FirebaseAuth.getInstance().signInWithEmailAndPassword(binding.txtUser.text.trim().toString(),binding.txtPwd.text.trim().toString()).addOnCompleteListener {
                     if (it.isSuccessful){
                         irMenu()
-                        //irHome(it.result?.user?.email?:"",ProviderType.BASIC)  //Esto de los interrogantes es por si está vacío el email.
                     } else {
                         showAlert(R.string.Login_Error_3)
                     }

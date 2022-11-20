@@ -95,7 +95,6 @@ class Justificante : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 //para decirle la carpeta donde se almacenara y su nombre
                 //si en el ref se lo pone un path se crean subcarpertas
                 val archivoRef = ref2.child("Perfiles/"+email+"/Justificantes/${FileUri!!.lastPathSegment}")
-                //val imagenRef = ref2.child("${FileUri!!.lastPathSegment}")
                 //con esto subimos el archivo
                 var uploadTask = archivoRef.putFile(FileUri)
                 uploadTask.addOnFailureListener {

@@ -41,9 +41,8 @@ tools:openDrawer="start">
             tools:layout="@layout/fragment_head" />
 
         <LinearLayout
-            android:layout_width="349dp"
-            android:layout_height="545dp"
-            android:layout_marginTop="50dp"
+            android:layout_width="353dp"
+            android:layout_height="583dp"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -51,45 +50,120 @@ tools:openDrawer="start">
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.846">
 
-            <EditText
-                android:id="@+id/txtDNI"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="DNI"
-                android:inputType="textPersonName" />
+                android:orientation="horizontal">
 
-            <EditText
-                android:id="@+id/txtName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="@string/name"
-                android:inputType="textPersonName" />
+                <TextView
+                    android:id="@+id/textView13"
+                    android:layout_width="236dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="DNI:"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
 
-            <EditText
-                android:id="@+id/txtApe"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="@string/surname"
-                android:inputType="textPersonName" />
+                <EditText
+                    android:id="@+id/txtDNI"
+                    android:layout_width="236dp"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="DNI"
+                    android:inputType="textPersonName" />
+            </LinearLayout>
 
-            <EditText
-                android:id="@+id/txtDire"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="@string/address"
-                android:inputType="textPersonName" />
+                android:orientation="horizontal">
 
-            <EditText
-                android:id="@+id/txtNac"
+                <TextView
+                    android:id="@+id/textView15"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/name"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/txtName"
+                    android:layout_width="236dp"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="@string/name"
+                    android:inputType="textPersonName" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="@string/birth_date"
-                android:inputType="date" />
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textView16"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/surname"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/txtApe"
+                    android:layout_width="236dp"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="@string/surname"
+                    android:inputType="textPersonName" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textView17"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/address"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/txtDire"
+                    android:layout_width="236dp"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="@string/address"
+                    android:inputType="textPersonName" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textView18"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/birth_date"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/txtNac"
+                    android:layout_width="236dp"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="@string/birth_date"
+                    android:inputType="date" />
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"

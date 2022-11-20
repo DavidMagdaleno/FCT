@@ -46,9 +46,7 @@ class Calendario : AppCompatActivity(), NavigationView.OnNavigationItemSelectedL
 
     private fun sacarRegistro(){
         var dias=0
-        var me=""
-        var d=""
-        var y=""
+        var me="";var d="";var y=""
         try {
             recuperarRegistro(object : RolCallback {
                 @RequiresApi(Build.VERSION_CODES.N)
@@ -78,19 +76,17 @@ class Calendario : AppCompatActivity(), NavigationView.OnNavigationItemSelectedL
                                 d=x.get("fechaIni")!!.substringBefore("/")
                                 if (x.getValue("estado").equals("Pendiente")){
                                     for (i in 0..dias){
-                                        showAlert("p: "+(d.toInt()+i))
+                                        //showAlert("p: "+(d.toInt()+i))
                                         binding.calendar.markDate(y.toInt(), pasarMes(me,d.toInt()+i).toInt(), d.toInt()+i).setMarkedStyle(MarkStyle.BACKGROUND,Color.YELLOW)
                                     }
                                 }
                                 if (x.getValue("estado").equals("Aprobado")){
                                     for (i in 0..dias){
-                                        showAlert("a: "+(d.toInt()+i))
                                         binding.calendar.markDate(y.toInt(), pasarMes(me,d.toInt()+i).toInt(), d.toInt()+i).setMarkedStyle(MarkStyle.BACKGROUND,Color.GREEN)
                                     }
                                 }
                                 if (x.getValue("estado").equals("Denegado")){
                                     for (i in 0..dias){
-                                        showAlert("d: "+(d.toInt()+i))
                                         binding.calendar.markDate(y.toInt(), pasarMes(me,d.toInt()+i).toInt(), d.toInt()+i).setMarkedStyle(MarkStyle.BACKGROUND,Color.RED)
                                     }
                                 }

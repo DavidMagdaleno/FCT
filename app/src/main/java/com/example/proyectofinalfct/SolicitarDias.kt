@@ -3,6 +3,7 @@ package com.example.proyectofinalfct
 import Model.AJustificante
 import Model.Dias
 import Model.RegistroL
+import Opciones.Opcion
 import android.content.DialogInterface
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -85,8 +86,6 @@ class SolicitarDias : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         val Myview=layoutInflater.inflate(R.layout.item_calendar, null)
         val calendar = Myview.findViewById<CalendarView>(R.id.calendarView)
         dialogo.setView(Myview)
-        //val adaptador = ArrayAdapter(this, R.layout.item_spiner,R.id.txtOpcion,tipoRol)
-        //srol.adapter = adaptador
         calendar.setOnDateChangeListener(object : CalendarView.OnDateChangeListener{
             override fun onSelectedDayChange(view: CalendarView, year: Int, month: Int, dayOfMonth: Int) {
                 txt.setText(dayOfMonth.toString()+"/"+(month+1).toString()+"/"+year.toString())
@@ -145,7 +144,7 @@ class SolicitarDias : AppCompatActivity(), NavigationView.OnNavigationItemSelect
                                     aux=aux+diferenciaHoras(d.getValue("fechaIni"),d.getValue("fechaFin"),null).toInt()
                                 }
                             }
-                            if ((aux+diferenciaHoras(binding.txtFini.text.toString(),binding.txtFFin.text.toString(),null))<30){
+                            if ((aux+diferenciaHoras(binding.txtFini.text.toString(),binding.txtFFin.text.toString(),null))<Opcion.DIASVACACIONES){
                                 Guardar("Vacaciones")
                             }else{
                                 showAlert(R.string.Dias_MSG_6)
