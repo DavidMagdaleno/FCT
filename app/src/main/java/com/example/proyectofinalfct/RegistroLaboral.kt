@@ -30,6 +30,7 @@ class RegistroLaboral : AppCompatActivity(), NavigationView.OnNavigationItemSele
     private lateinit var intenMenu: Intent
     private var accion:Int=-1
     private var Rbarra:Int=-1
+    private var r:Boolean=false
 
     private var dni:String=""
     private var nombre:String=""
@@ -74,7 +75,7 @@ class RegistroLaboral : AppCompatActivity(), NavigationView.OnNavigationItemSele
         RegistroOnline()
 
         binding.btnRegistro.setOnClickListener {
-            //Rbarra=0
+            r=true
             RegistroOnline()
         }
 
@@ -139,7 +140,7 @@ class RegistroLaboral : AppCompatActivity(), NavigationView.OnNavigationItemSele
                             }
                         }
                     }
-                    if (!contiene){
+                    if (!contiene && r){
                         rhoras.add(RegistroL(currentdate.toString(),currenthour.toString(),""))
                         accion=0
                         guardado(em)
