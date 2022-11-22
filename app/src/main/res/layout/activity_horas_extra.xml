@@ -78,7 +78,15 @@ tools:openDrawer="start">
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvHe"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="436dp" />
+
+            <Button
+                android:id="@+id/btnVolv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="35dp"
+                android:backgroundTint="@color/bluespecial"
+                android:text="@string/back" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 

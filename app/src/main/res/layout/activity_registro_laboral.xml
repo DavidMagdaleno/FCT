@@ -112,7 +112,7 @@ tools:openDrawer="start">
 
         <LinearLayout
             android:layout_width="324dp"
-            android:layout_height="464dp"
+            android:layout_height="492dp"
             android:layout_marginBottom="36dp"
             android:orientation="vertical"
             android:textAlignment="center"
@@ -170,6 +170,14 @@ tools:openDrawer="start">
                 android:layout_height="227dp"
                 android:scaleType="fitCenter"
                 tools:srcCompat="@tools:sample/avatars" />
+
+            <Button
+                android:id="@+id/btnVo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:backgroundTint="@color/bluespecial"
+                android:text="@string/back" />
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

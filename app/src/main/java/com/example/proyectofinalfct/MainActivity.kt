@@ -27,6 +27,7 @@ class MainActivity : AppCompatActivity() {
         bundle.putString("message","Integración completada")
         analy.logEvent("InitScreen",bundle)
 
+
         title = "Autenticación"
         binding.btnPruebaGuardar.setOnClickListener(){
             if (!binding.txtUser.text.trim().isNullOrEmpty() && !binding.txtPwd.text.trim().isNullOrEmpty()){
@@ -53,9 +54,6 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-
-
-
     }
 
     private fun irMenu(){

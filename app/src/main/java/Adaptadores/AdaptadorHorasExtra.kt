@@ -37,6 +37,7 @@ class AdaptadorHorasExtra(var horas : ArrayList<HExtra>, var  context: Context):
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val fecha = view.findViewById(R.id.txtFechaHe) as TextView
         private val he = view.findViewById(R.id.txtNhe) as TextView
+        private val pu = view.findViewById(R.id.txtPuest) as TextView
 
 
         @SuppressLint("ResourceAsColor")
@@ -44,11 +45,12 @@ class AdaptadorHorasExtra(var horas : ArrayList<HExtra>, var  context: Context):
 
             fecha.text=pers.Fecha
             he.text=pers.Horas
+            pu.text=pers.Puesto
             //avatar.setImageBitmap(pers.img)
 
             if (pers.Horas.toInt() > 0) {
-                fecha.setTextColor(R.color.purple_200)
-                he.setTextColor(R.color.purple_200)
+                fecha.setTextColor(R.color.green)
+                he.setTextColor(R.color.green)
             }
 
 

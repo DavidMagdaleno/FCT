@@ -50,4 +50,7 @@
     <string name="s_day">Seleccionar Días</string>
     <string name="solicitar">Enviar</string>
     <string name="date">Fecha:</string>
+    <string name="logout">Salir</string>
+    <string name="admin">Administrador</string>
+    <string name="Puesto">Puesto:</string>
 </resources>

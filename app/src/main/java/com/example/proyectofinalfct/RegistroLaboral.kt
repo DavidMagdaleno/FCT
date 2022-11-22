@@ -42,6 +42,8 @@ class RegistroLaboral : AppCompatActivity(), NavigationView.OnNavigationItemSele
     private var rhoras = ArrayList<RegistroL>()
     private var NJustifi = ArrayList<AJustificante>()
     private var Sdias= ArrayList<Dias>()
+    private var perfil=""
+    private var puesto=""
 
     private val sdf = SimpleDateFormat("dd/MM/yyyy", Locale("es", "ES"))
     private val sdf2 = SimpleDateFormat("HH:mm:ss", Locale("es", "ES"))
@@ -66,6 +68,7 @@ class RegistroLaboral : AppCompatActivity(), NavigationView.OnNavigationItemSele
 
         val bundle:Bundle? = intent.extras
         val email = bundle?.getString("email").toString()
+        val per = bundle?.getString("perfil").toString()
         em=email
 
 
@@ -81,6 +84,11 @@ class RegistroLaboral : AppCompatActivity(), NavigationView.OnNavigationItemSele
 
         binding.btnQr.setOnClickListener {
             sacarRegistroQr()
+        }
+
+        binding.btnVo.setOnClickListener {
+            intenMenu= Intent(this,Menu::class.java).apply { putExtra("email",email) }
+            startActivity(intenMenu)
         }
 
     }
@@ -101,6 +109,8 @@ class RegistroLaboral : AppCompatActivity(), NavigationView.OnNavigationItemSele
             rhoras=it.get("Registro") as ArrayList<RegistroL>
             NJustifi=it.get("Justificante") as ArrayList<AJustificante>
             Sdias=it.get("Dias") as ArrayList<Dias>
+            perfil=it.get("Perfil").toString()
+            puesto=it.get("Puesto").toString()
             sacarRegistro()
         }.addOnFailureListener{
             Toast.makeText(this, "Algo ha ido mal al recuperar",Toast.LENGTH_SHORT).show()
@@ -223,7 +233,9 @@ class RegistroLaboral : AppCompatActivity(), NavigationView.OnNavigationItemSele
             "Foto" to f,
             "Registro" to rhoras,
             "Justificante" to NJustifi,
-            "Dias" to Sdias
+            "Dias" to Sdias,
+            "Perfil" to perfil,
+            "Puesto" to puesto
         )
 
         db.collection("usuarios")//añade o sebreescribe
@@ -267,14 +279,15 @@ class RegistroLaboral : AppCompatActivity(), NavigationView.OnNavigationItemSele
     override fun onNavigationItemSelected(@NonNull menuItem: MenuItem): Boolean {
         val bundle:Bundle? = intent.extras
         val email = bundle?.getString("email").toString()
+        val per = bundle?.getString("perfil").toString()
         intenMenu = when (menuItem.itemId) {
-            R.id.opDatos -> Intent(this,DatosUsuario::class.java).apply { putExtra("email",email); putExtra("Mod","Modificar") }
-            R.id.opJornada -> Intent(this,RegistroLaboral::class.java).apply { putExtra("email",email) }
-            R.id.opExtra -> Intent(this,HorasExtra::class.java).apply { putExtra("email",email) }
-            R.id.opCalendario -> Intent(this,Calendario::class.java).apply { putExtra("email",email) }
-            R.id.opSolicitar -> Intent(this,SolicitarDias::class.java).apply { putExtra("email",email) }
-            R.id.opJustifi -> Intent(this,Justificante::class.java).apply { putExtra("email",email) }
-            R.id.opNotifi -> Intent(this,Notificacion::class.java).apply { putExtra("email",email) }
+            R.id.opDatos -> Intent(this,DatosUsuario::class.java).apply { putExtra("email",email); putExtra("Mod","Modificar");putExtra("perfil",per) }
+            R.id.opJornada -> Intent(this,RegistroLaboral::class.java).apply { putExtra("email",email);putExtra("perfil",per) }
+            R.id.opExtra -> Intent(this,HorasExtra::class.java).apply { putExtra("email",email);putExtra("perfil",per) }
+            R.id.opCalendario -> Intent(this,Calendario::class.java).apply { putExtra("email",email);putExtra("perfil",per) }
+            R.id.opSolicitar -> Intent(this,SolicitarDias::class.java).apply { putExtra("email",email);putExtra("perfil",per) }
+            R.id.opJustifi -> Intent(this,Justificante::class.java).apply { putExtra("email",email);putExtra("perfil",per) }
+            R.id.opNotifi -> Intent(this,Notificacion::class.java).apply { putExtra("email",email);putExtra("perfil",per) }
             else -> throw IllegalArgumentException("menu option not implemented!!")
         }
         binding.drawerLayout.closeDrawer(GravityCompat.START)

@@ -41,6 +41,8 @@ class Justificante : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private var rhoras = ArrayList<RegistroL>()
     private var arch = ArrayList<AJustificante>()
     private var Sdias= ArrayList<Dias>()
+    private var perfil=""
+    private var puesto=""
 
     private var NomArch:String=""
 
@@ -58,6 +60,9 @@ class Justificante : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         binding.drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
 
+        val bundle:Bundle? = intent.extras
+        val email = bundle?.getString("email").toString()
+        val per = bundle?.getString("perfil").toString()
 
         binding.btnAcp.isEnabled=false
 
@@ -81,6 +86,10 @@ class Justificante : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }else{
                 showAlert()
             }
+        }
+        binding.btnVol.setOnClickListener {
+            intenMenu= Intent(this,Menu::class.java).apply { putExtra("email",email) }
+            startActivity(intenMenu)
         }
     }
 
@@ -147,6 +156,8 @@ class Justificante : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             rhoras=it.get("Registro") as ArrayList<RegistroL>
             arch=it.get("Justificante") as ArrayList<AJustificante>
             Sdias=it.get("Dias") as ArrayList<Dias>
+            perfil=it.get("Perfil").toString()
+            puesto=it.get("Puesto").toString()
 
             binding.btnAcp.isEnabled=true
             archivo=true
@@ -170,7 +181,9 @@ class Justificante : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             "Foto" to f,
             "Registro" to rhoras,
             "Justificante" to arch,
-            "Dias" to Sdias
+            "Dias" to Sdias,
+            "Perfil" to perfil,
+            "Puesto" to puesto
         )
         db.collection("usuarios")//añade o sebreescribe
             .document(email) //Será la clave del documento.
@@ -202,14 +215,15 @@ class Justificante : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onNavigationItemSelected(@NonNull menuItem: MenuItem): Boolean {
         val bundle:Bundle? = intent.extras
         val email = bundle?.getString("email").toString()
+        val per = bundle?.getString("perfil").toString()
         intenMenu = when (menuItem.itemId) {
-            R.id.opDatos -> Intent(this,DatosUsuario::class.java).apply { putExtra("email",email); putExtra("Mod","Modificar") }
-            R.id.opJornada -> Intent(this,RegistroLaboral::class.java).apply { putExtra("email",email) }
-            R.id.opExtra -> Intent(this,HorasExtra::class.java).apply { putExtra("email",email) }
-            R.id.opCalendario -> Intent(this,Calendario::class.java).apply { putExtra("email",email) }
-            R.id.opSolicitar -> Intent(this,SolicitarDias::class.java).apply { putExtra("email",email) }
-            R.id.opJustifi -> Intent(this,Justificante::class.java).apply { putExtra("email",email) }
-            R.id.opNotifi -> Intent(this,Notificacion::class.java).apply { putExtra("email",email) }
+            R.id.opDatos -> Intent(this,DatosUsuario::class.java).apply { putExtra("email",email); putExtra("Mod","Modificar");putExtra("perfil",per) }
+            R.id.opJornada -> Intent(this,RegistroLaboral::class.java).apply { putExtra("email",email);putExtra("perfil",per) }
+            R.id.opExtra -> Intent(this,HorasExtra::class.java).apply { putExtra("email",email);putExtra("perfil",per) }
+            R.id.opCalendario -> Intent(this,Calendario::class.java).apply { putExtra("email",email);putExtra("perfil",per) }
+            R.id.opSolicitar -> Intent(this,SolicitarDias::class.java).apply { putExtra("email",email);putExtra("perfil",per) }
+            R.id.opJustifi -> Intent(this,Justificante::class.java).apply { putExtra("email",email);putExtra("perfil",per) }
+            R.id.opNotifi -> Intent(this,Notificacion::class.java).apply { putExtra("email",email);putExtra("perfil",per) }
             else -> throw IllegalArgumentException("menu option not implemented!!")
         }
         binding.drawerLayout.closeDrawer(GravityCompat.START)

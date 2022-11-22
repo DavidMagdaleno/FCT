@@ -4,6 +4,7 @@ import Model.AJustificante
 import Model.Dias
 import Model.ImgPerfil
 import Model.RegistroL
+import Opciones.Opcion
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -12,11 +13,14 @@ import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.annotation.NonNull
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
+import androidx.core.view.get
 import androidx.core.view.isVisible
 import com.example.proyectofinalfct.databinding.ActivityDatosUsuarioBinding
 import com.google.android.material.navigation.NavigationView
@@ -31,14 +35,16 @@ class DatosUsuario : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     var rhoras = ArrayList<RegistroL>()
     var NJustifi = ArrayList<AJustificante>()
     var Sdias= ArrayList<Dias>()
+    var puesto=""
     private val database= Firebase.storage
     val ref2=database.reference
-    //private val cameraRequest=1888
     val ONE_MEGABYTE: Long = 1024 * 1024
     var perfil:ImgPerfil=ImgPerfil("",null)
+    var antiImagen=""
+    var p=""
     private val db = FirebaseFirestore.getInstance()
     lateinit var binding: ActivityDatosUsuarioBinding
-
+    //private val cameraRequest=1888
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding= ActivityDatosUsuarioBinding.inflate(layoutInflater)
@@ -58,8 +64,33 @@ class DatosUsuario : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val bundle:Bundle? = intent.extras
         val email = bundle?.getString("email").toString()
         val modi = bundle?.getString("Mod").toString()
-        if (modi=="Modificar"){
+        val per = bundle?.getString("perfil").toString()
+        p=per
+        binding.btnVolver.setOnClickListener {
+            intenMenu= Intent(this,Menu::class.java).apply { putExtra("email",email);putExtra("perfil",per) }
+            startActivity(intenMenu)
+        }
 
+        binding.cbUser.setOnClickListener {
+            binding.cbAdmin.isChecked=false
+        }
+        binding.cbAdmin.setOnClickListener {
+            binding.cbUser.isChecked=false
+        }
+
+        val adaptador = ArrayAdapter(this, R.layout.item_sppuesto,R.id.txtPuesto,Opcion.puestos)
+        binding.spPuesto.adapter = adaptador
+
+        binding.spPuesto.setOnItemSelectedListener(object: AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, pos: Int, id: Long) {
+                var p = Opcion.puestos.get(pos)
+                puesto=p
+            }
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+            }
+        })
+        
+        if (modi=="Modificar"){
             db.collection("usuarios").document(email).get().addOnSuccessListener {
                 //Si encuentra el documento será satisfactorio este listener y entraremos en él.
                 binding.txtDNI.setText(it.get("DNI").toString())
@@ -69,44 +100,69 @@ class DatosUsuario : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 binding.txtNac.setText(it.get("FechaNac").toString())
                 if (it.get("Foto").toString()!=""){
                     perfil.nombre=it.get("Foto").toString()
+                    antiImagen=it.get("Foto").toString()
                     recuperarFoto()
                 }
+                puesto=it.get("Puesto").toString()
                 rhoras=it.get("Registro") as ArrayList<RegistroL>
                 NJustifi=it.get("Justificante") as ArrayList<AJustificante>
                 Sdias=it.get("Dias") as ArrayList<Dias>
+                if (it.get("Perfil").toString().equals("Usuario")){
+                    binding.cbUser.isChecked=true
+                    binding.cbAdmin.isChecked=false
+                }else{
+                    binding.cbUser.isChecked=false
+                    binding.cbAdmin.isChecked=true
+                }
                 //Toast.makeText(this, "Recuperado",Toast.LENGTH_SHORT).show()
             }.addOnFailureListener{
                 Toast.makeText(this, "Algo ha ido mal al recuperar",Toast.LENGTH_SHORT).show()
             }
 
+            binding.cbAdmin.isVisible=false
+            binding.cbUser.isVisible=false
             binding.txtDNI.isFocusable=false
             binding.txtDNI.isFocusableInTouchMode=false
+
+            binding.txtP.text="Actual: "+puesto
 
         }
 
         binding.btnAcept.setOnClickListener {
-            //Se guardarán en modo HashMap (clave, valor).
-            var user = hashMapOf(
-                "DNI" to binding.txtDNI.text.trim().toString(),
-                "Nombre" to binding.txtName.text.toString(),
-                "Apellidos" to binding.txtApe.text.toString(),
-                "Direccion" to binding.txtDire.text.toString(),
-                "FechaNac" to binding.txtNac.text.toString(),
-                "Foto" to perfil.nombre,
-                "Registro" to rhoras,
-                "Justificante" to NJustifi,
-                "Dias" to Sdias
-            )
+            Thread.sleep(1000)
+            if ((!binding.cbUser.isChecked && !binding.cbAdmin.isChecked) || (binding.cbUser.isChecked && binding.cbAdmin.isChecked)){
+                Log.e("ERROR","No has seleccionado un perfil o has seleccionado demasiados")
+            }else{
+                if (puesto.equals("")){
+                    Log.e("ERROR","El trabajador no tiene asignado un puesto")
+                }else{
+                    if (binding.cbUser.isChecked){ p="Usuario" }
+                    if (binding.cbAdmin.isChecked){ p="Admin" }
+                    //Se guardarán en modo HashMap (clave, valor).
+                    var user = hashMapOf(
+                        "DNI" to binding.txtDNI.text.trim().toString(),
+                        "Nombre" to binding.txtName.text.toString(),
+                        "Apellidos" to binding.txtApe.text.toString(),
+                        "Direccion" to binding.txtDire.text.toString(),
+                        "FechaNac" to binding.txtNac.text.toString(),
+                        "Foto" to perfil.nombre,
+                        "Registro" to rhoras,
+                        "Justificante" to NJustifi,
+                        "Dias" to Sdias,
+                        "Perfil" to p,
+                        "Puesto" to puesto
+                    )
 
-            db.collection("usuarios")//añade o sebreescribe
-                .document(email) //Será la clave del documento.
-                .set(user).addOnSuccessListener {
-                    Toast.makeText(this, "Almacenado", Toast.LENGTH_SHORT).show()
-                    finish()
-                }.addOnFailureListener{
-                    Toast.makeText(this, "Ha ocurrido un error", Toast.LENGTH_SHORT).show()
+                    db.collection("usuarios")//añade o sebreescribe
+                        .document(email) //Será la clave del documento.
+                        .set(user).addOnSuccessListener {
+                            Toast.makeText(this, "Almacenado", Toast.LENGTH_SHORT).show()
+                            finish()
+                        }.addOnFailureListener{
+                            Toast.makeText(this, "Ha ocurrido un error", Toast.LENGTH_SHORT).show()
+                        }
                 }
-
+            }
         }
 
         binding.btnSfoto.setOnClickListener{
@@ -154,6 +210,7 @@ class DatosUsuario : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     } catch (e: InterruptedException) {
                         e.printStackTrace()
                     }
+                    limpiarDatos(email)
                     // taskSnapshot.metadata contains file metadata such as size, content-type, etc.
                     // ...
                 }
@@ -165,6 +222,15 @@ class DatosUsuario : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             //val photo:Bitmap=data?.extras?.get("data") as Bitmap
             //binding.imgFoto.setImageBitmap(photo)
         //}
+    }
+
+    private fun limpiarDatos(email:String){
+        val imagenRef = ref2.child("Perfiles/"+email+"/${antiImagen}")
+        imagenRef.delete().addOnSuccessListener { taskSnapshot ->
+            Log.e("Conseguido","Archivo antiguo eliminado con exito")
+        }.addOnFailureListener {
+            Log.e("ERROR","Archivo antiguo NO eliminado con exito")
+        }
     }
 
     override fun onStart() {
@@ -243,13 +309,13 @@ class DatosUsuario : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val bundle:Bundle? = intent.extras
         val email = bundle?.getString("email").toString()
         when (menuItem.itemId) {
-            R.id.opDatos -> intenMenu = Intent(this,DatosUsuario::class.java).apply { putExtra("email",email); putExtra("Mod","Modificar") }
-            R.id.opJornada -> intenMenu = Intent(this,RegistroLaboral::class.java).apply { putExtra("email",email) }
-            R.id.opExtra -> intenMenu = Intent(this,HorasExtra::class.java).apply { putExtra("email",email) }
-            R.id.opCalendario -> intenMenu = Intent(this,Calendario::class.java).apply { putExtra("email",email) }
-            R.id.opSolicitar -> intenMenu = Intent(this,SolicitarDias::class.java).apply { putExtra("email",email) }
-            R.id.opJustifi -> intenMenu = Intent(this,Justificante::class.java).apply { putExtra("email",email) }
-            R.id.opNotifi -> intenMenu = Intent(this,Notificacion::class.java).apply { putExtra("email",email) }
+            R.id.opDatos -> intenMenu = Intent(this,DatosUsuario::class.java).apply { putExtra("email",email); putExtra("Mod","Modificar");putExtra("perfil",p) }
+            R.id.opJornada -> intenMenu = Intent(this,RegistroLaboral::class.java).apply { putExtra("email",email);putExtra("perfil",p) }
+            R.id.opExtra -> intenMenu = Intent(this,HorasExtra::class.java).apply { putExtra("email",email);putExtra("perfil",p) }
+            R.id.opCalendario -> intenMenu = Intent(this,Calendario::class.java).apply { putExtra("email",email);putExtra("perfil",p) }
+            R.id.opSolicitar -> intenMenu = Intent(this,SolicitarDias::class.java).apply { putExtra("email",email);putExtra("perfil",p) }
+            R.id.opJustifi -> intenMenu = Intent(this,Justificante::class.java).apply { putExtra("email",email);putExtra("perfil",p) }
+            R.id.opNotifi -> intenMenu = Intent(this,Notificacion::class.java).apply { putExtra("email",email);putExtra("perfil",p) }
             else -> throw IllegalArgumentException("menu option not implemented!!")
         }
         binding.drawerLayout.closeDrawer(GravityCompat.START)
@@ -265,7 +331,5 @@ class DatosUsuario : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
-    fun volver(view: View){
-        this.finish()
-    }
+
 }

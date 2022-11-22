@@ -153,6 +153,14 @@ tools:openDrawer="start">
                 android:backgroundTint="@color/bluespecial"
                 android:text="@string/solicitar" />
 
+            <Button
+                android:id="@+id/btnV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="85dp"
+                android:backgroundTint="@color/bluespecial"
+                android:text="@string/back" />
+
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

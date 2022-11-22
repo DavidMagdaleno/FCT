@@ -41,7 +41,17 @@ class Calendario : AppCompatActivity(), NavigationView.OnNavigationItemSelectedL
         binding.drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
 
+        val bundle:Bundle? = intent.extras
+        val email = bundle?.getString("email").toString()
+        val per = bundle?.getString("perfil").toString()
+
         sacarRegistro()
+
+        binding.btnVolve.setOnClickListener {
+           intenMenu= Intent(this,Menu::class.java).apply { putExtra("email",email) }
+            startActivity(intenMenu)
+        }
+
     }
 
     private fun sacarRegistro(){
@@ -181,14 +191,15 @@ class Calendario : AppCompatActivity(), NavigationView.OnNavigationItemSelectedL
     override fun onNavigationItemSelected(@NonNull menuItem: MenuItem): Boolean {
         val bundle:Bundle? = intent.extras
         val email = bundle?.getString("email").toString()
+        val per = bundle?.getString("perfil").toString()
         intenMenu = when (menuItem.itemId) {
-            R.id.opDatos -> Intent(this,DatosUsuario::class.java).apply { putExtra("email",email); putExtra("Mod","Modificar") }
-            R.id.opJornada -> Intent(this,RegistroLaboral::class.java).apply { putExtra("email",email) }
-            R.id.opExtra -> Intent(this,HorasExtra::class.java).apply { putExtra("email",email) }
-            R.id.opCalendario -> Intent(this,Calendario::class.java).apply { putExtra("email",email) }
-            R.id.opSolicitar -> Intent(this,SolicitarDias::class.java).apply { putExtra("email",email) }
-            R.id.opJustifi -> Intent(this,Justificante::class.java).apply { putExtra("email",email) }
-            R.id.opNotifi -> Intent(this,Notificacion::class.java).apply { putExtra("email",email) }
+            R.id.opDatos -> Intent(this,DatosUsuario::class.java).apply { putExtra("email",email); putExtra("Mod","Modificar");putExtra("perfil",per) }
+            R.id.opJornada -> Intent(this,RegistroLaboral::class.java).apply { putExtra("email",email);putExtra("perfil",per) }
+            R.id.opExtra -> Intent(this,HorasExtra::class.java).apply { putExtra("email",email);putExtra("perfil",per) }
+            R.id.opCalendario -> Intent(this,Calendario::class.java).apply { putExtra("email",email);putExtra("perfil",per) }
+            R.id.opSolicitar -> Intent(this,SolicitarDias::class.java).apply { putExtra("email",email);putExtra("perfil",per) }
+            R.id.opJustifi -> Intent(this,Justificante::class.java).apply { putExtra("email",email);putExtra("perfil",per) }
+            R.id.opNotifi -> Intent(this,Notificacion::class.java).apply { putExtra("email",email);putExtra("perfil",per) }
             else -> throw IllegalArgumentException("menu option not implemented!!")
         }
         binding.drawerLayout.closeDrawer(GravityCompat.START)
