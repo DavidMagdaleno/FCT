@@ -2,6 +2,7 @@ package com.example.proyectofinalfct
 
 import Model.AJustificante
 import Model.Dias
+import Model.Notifica
 import Model.RegistroL
 import Opciones.Opcion
 import android.content.DialogInterface
@@ -42,6 +43,7 @@ class SolicitarDias : AppCompatActivity(), NavigationView.OnNavigationItemSelect
     private var Sdias= ArrayList<Dias>()
     private var perfil=""
     private var puesto=""
+    private var Notifi = ArrayList<Notifica>()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -85,7 +87,7 @@ class SolicitarDias : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         }
 
         binding.btnV.setOnClickListener {
-            intenMenu= Intent(this,Menu::class.java).apply { putExtra("email",email) }
+            intenMenu= Intent(this,Menu::class.java).apply { putExtra("email",email); putExtra("perfil",per) }
             startActivity(intenMenu)
         }
 
@@ -130,6 +132,7 @@ class SolicitarDias : AppCompatActivity(), NavigationView.OnNavigationItemSelect
             Sdias=it.get("Dias") as ArrayList<Dias>
             perfil=it.get("Perfil").toString()
             puesto=it.get("Puesto").toString()
+            Notifi=it.get("Notificacion") as ArrayList<Notifica>
             comprobaryGuardar()
             //Toast.makeText(this, "Recuperado",Toast.LENGTH_SHORT).show()
         }.addOnFailureListener{
@@ -204,6 +207,7 @@ class SolicitarDias : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         val bundle:Bundle? = intent.extras
         val email = bundle?.getString("email").toString()
         Sdias.add(Dias(binding.txtFini.text.toString(),binding.txtFFin.text.toString(),t,"Pendiente"))
+        Notifi.add(Notifica("Solicitar Días",nombre,"Pendiente",puesto,t,binding.txtFini.text.toString()+"-"+binding.txtFFin.text.toString()))
         //Se guardarán en modo HashMap (clave, valor).
         val user = hashMapOf(
             "DNI" to dni,
@@ -216,7 +220,8 @@ class SolicitarDias : AppCompatActivity(), NavigationView.OnNavigationItemSelect
             "Justificante" to arch,
             "Dias" to Sdias,
             "Perfil" to perfil,
-            "Puesto" to puesto
+            "Puesto" to puesto,
+            "Notificacion" to Notifi
         )
         db.collection("usuarios")//añade o sebreescribe
             .document(email) //Será la clave del documento.

@@ -56,4 +56,6 @@
     <string name="logout">Logout</string>
     <string name="admin">Admin</string>
     <string name="Puesto">Job:</string>
+    <string name="ap">Pass</string>
+    <string name="dn">Deny</string>
 </resources>

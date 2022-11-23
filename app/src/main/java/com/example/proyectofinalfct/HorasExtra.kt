@@ -82,6 +82,7 @@ class HorasExtra : AppCompatActivity(), NavigationView.OnNavigationItemSelectedL
             var miAdapter = AdaptadorHorasExtra(rhorasextra, this@HorasExtra)
             miRecyclerView.adapter = miAdapter
         */
+        Recuperar()
         sacarMeses()
 
         binding.spMeses.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
@@ -97,12 +98,12 @@ class HorasExtra : AppCompatActivity(), NavigationView.OnNavigationItemSelectedL
         }
 
         binding.btnVolv.setOnClickListener {
-            intenMenu= Intent(this,Menu::class.java).apply { putExtra("email",email) }
+            intenMenu= Intent(this,Menu::class.java).apply { putExtra("email",email);putExtra("perfil",per) }
             startActivity(intenMenu)
         }
     }
 
-    private fun RecuperaryGuardar(){
+    private fun Recuperar(){
         val bundle:Bundle? = intent.extras
         val email = bundle?.getString("email").toString()
         db.collection("usuarios").document(email).get().addOnSuccessListener {

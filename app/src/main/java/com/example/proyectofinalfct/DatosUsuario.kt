@@ -1,9 +1,6 @@
 package com.example.proyectofinalfct
 
-import Model.AJustificante
-import Model.Dias
-import Model.ImgPerfil
-import Model.RegistroL
+import Model.*
 import Opciones.Opcion
 import android.content.Intent
 import android.graphics.Bitmap
@@ -35,6 +32,7 @@ class DatosUsuario : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     var rhoras = ArrayList<RegistroL>()
     var NJustifi = ArrayList<AJustificante>()
     var Sdias= ArrayList<Dias>()
+    var Notifi = ArrayList<Notifica>()
     var puesto=""
     private val database= Firebase.storage
     val ref2=database.reference
@@ -107,6 +105,7 @@ class DatosUsuario : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 rhoras=it.get("Registro") as ArrayList<RegistroL>
                 NJustifi=it.get("Justificante") as ArrayList<AJustificante>
                 Sdias=it.get("Dias") as ArrayList<Dias>
+                Notifi=it.get("Notificacion") as ArrayList<Notifica>
                 if (it.get("Perfil").toString().equals("Usuario")){
                     binding.cbUser.isChecked=true
                     binding.cbAdmin.isChecked=false
@@ -150,7 +149,8 @@ class DatosUsuario : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         "Justificante" to NJustifi,
                         "Dias" to Sdias,
                         "Perfil" to p,
-                        "Puesto" to puesto
+                        "Puesto" to puesto,
+                        "Notificacion" to Notifi
                     )
 
                     db.collection("usuarios")//añade o sebreescribe

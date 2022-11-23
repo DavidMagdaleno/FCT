@@ -2,6 +2,7 @@ package com.example.proyectofinalfct
 
 import Model.AJustificante
 import Model.Dias
+import Model.Notifica
 import Model.RegistroL
 import android.content.Intent
 import android.graphics.Color
@@ -44,6 +45,7 @@ class RegistroLaboral : AppCompatActivity(), NavigationView.OnNavigationItemSele
     private var Sdias= ArrayList<Dias>()
     private var perfil=""
     private var puesto=""
+    private var Notifi = ArrayList<Notifica>()
 
     private val sdf = SimpleDateFormat("dd/MM/yyyy", Locale("es", "ES"))
     private val sdf2 = SimpleDateFormat("HH:mm:ss", Locale("es", "ES"))
@@ -87,7 +89,7 @@ class RegistroLaboral : AppCompatActivity(), NavigationView.OnNavigationItemSele
         }
 
         binding.btnVo.setOnClickListener {
-            intenMenu= Intent(this,Menu::class.java).apply { putExtra("email",email) }
+            intenMenu= Intent(this,Menu::class.java).apply { putExtra("email",email);putExtra("perfil",per) }
             startActivity(intenMenu)
         }
 
@@ -111,6 +113,7 @@ class RegistroLaboral : AppCompatActivity(), NavigationView.OnNavigationItemSele
             Sdias=it.get("Dias") as ArrayList<Dias>
             perfil=it.get("Perfil").toString()
             puesto=it.get("Puesto").toString()
+            Notifi=it.get("Notificacion") as ArrayList<Notifica>
             sacarRegistro()
         }.addOnFailureListener{
             Toast.makeText(this, "Algo ha ido mal al recuperar",Toast.LENGTH_SHORT).show()
@@ -235,7 +238,8 @@ class RegistroLaboral : AppCompatActivity(), NavigationView.OnNavigationItemSele
             "Justificante" to NJustifi,
             "Dias" to Sdias,
             "Perfil" to perfil,
-            "Puesto" to puesto
+            "Puesto" to puesto,
+            "Notificacion" to Notifi
         )
 
         db.collection("usuarios")//añade o sebreescribe
