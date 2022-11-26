@@ -58,8 +58,10 @@ tools:openDrawer="start">
         <LinearLayout
             android:id="@+id/linearLayout4"
             android:layout_width="0dp"
-            android:layout_height="122dp"
+            android:layout_height="121dp"
+            android:layout_marginLeft="30dp"
             android:layout_marginTop="20dp"
+            android:layout_marginRight="30dp"
             android:layout_marginBottom="120dp"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -76,7 +78,7 @@ tools:openDrawer="start">
 
                 <TextView
                     android:id="@+id/textView9"
-                    android:layout_width="wrap_content"
+                    android:layout_width="80dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/F_ini"
@@ -84,13 +86,13 @@ tools:openDrawer="start">
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
-                <EditText
-                    android:id="@+id/etxtFechaIni"
-                    android:layout_width="wrap_content"
+                <Button
+                    android:id="@+id/btnFechaIni"
+                    android:layout_width="130dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:ems="10"
-                    android:inputType="textPersonName" />
+                    android:backgroundTint="@color/bluespecial"
+                    android:text="@string/s_day" />
             </LinearLayout>
 
             <LinearLayout
@@ -101,7 +103,7 @@ tools:openDrawer="start">
 
                 <TextView
                     android:id="@+id/textView10"
-                    android:layout_width="94dp"
+                    android:layout_width="80dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/F_fin"
@@ -109,13 +111,13 @@ tools:openDrawer="start">
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
-                <EditText
-                    android:id="@+id/etxtFechaFin"
-                    android:layout_width="wrap_content"
+                <Button
+                    android:id="@+id/btnFechaFin"
+                    android:layout_width="130dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:ems="10"
-                    android:inputType="textPersonName" />
+                    android:backgroundTint="@color/bluespecial"
+                    android:text="@string/s_day" />
             </LinearLayout>
         </LinearLayout>
 

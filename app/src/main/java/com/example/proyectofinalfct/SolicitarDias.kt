@@ -10,6 +10,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
+import android.widget.Button
 import android.widget.CalendarView
 import android.widget.TextView
 import android.widget.Toast
@@ -64,13 +65,21 @@ class SolicitarDias : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         val email = bundle?.getString("email").toString()
         val per = bundle?.getString("perfil").toString()
 
-        binding.btnDias.setOnClickListener {
+        /*binding.btnDias.setOnClickListener {
             if (binding.txtFini.text.isNullOrEmpty()){
                 DialogLogin(binding.txtFini)
             }else{
                 DialogLogin(binding.txtFFin)
             }
+        }*/
+
+        binding.btnFini.setOnClickListener {
+            DialogLogin(binding.btnFini)
         }
+        binding.btnFFin.setOnClickListener {
+            DialogLogin(binding.btnFFin)
+        }
+
         binding.chAsuntos.setOnClickListener {
             binding.chVacaciones.isChecked=false
         }
@@ -93,7 +102,7 @@ class SolicitarDias : AppCompatActivity(), NavigationView.OnNavigationItemSelect
 
     }
 
-    private fun DialogLogin(txt: TextView): Boolean {
+    private fun DialogLogin(txt: Button): Boolean {
         val dialogo: android.app.AlertDialog.Builder = android.app.AlertDialog.Builder(this)
         val Myview=layoutInflater.inflate(R.layout.item_calendar, null)
         val calendar = Myview.findViewById<CalendarView>(R.id.calendarView)
@@ -141,11 +150,11 @@ class SolicitarDias : AppCompatActivity(), NavigationView.OnNavigationItemSelect
     }
 
     private fun comprobaryGuardar(){
-        if (!binding.txtFini.text.isNullOrEmpty() && !binding.txtFFin.text.isNullOrEmpty()){
-            if (diferenciaHoras(binding.txtFini.text.toString(),binding.txtFFin.text.toString(),null)>=0){
-                if (diferenciaHoras(binding.txtFini.text.toString(),Date().toString(),Date())<0){
+        if (!binding.btnFini.text.equals(R.string.s_day) && !binding.btnFFin.text.equals(R.string.s_day)){
+            if (diferenciaHoras(binding.btnFini.text.toString(),binding.btnFFin.text.toString(),null)>=0){
+                if (diferenciaHoras(binding.btnFini.text.toString(),Date().toString(),Date())<=0){
                     if (binding.chAsuntos.isChecked){
-                        if (binding.txtFini.text==binding.txtFFin.text){
+                        if (binding.btnFini.text==binding.btnFFin.text){
                             Guardar("Asuntos Propios")
                         }else{
                             showAlert(R.string.Dias_MSG_7)
@@ -159,13 +168,13 @@ class SolicitarDias : AppCompatActivity(), NavigationView.OnNavigationItemSelect
                                     aux=aux+diferenciaHoras(d.getValue("fechaIni"),d.getValue("fechaFin"),null).toInt()
                                 }
                             }
-                            if ((aux+diferenciaHoras(binding.txtFini.text.toString(),binding.txtFFin.text.toString(),null))<Opcion.DIASVACACIONES){
+                            if ((aux+diferenciaHoras(binding.btnFini.text.toString(),binding.btnFFin.text.toString(),null))<Opcion.DIASVACACIONES){
                                 Guardar("Vacaciones")
                             }else{
                                 showAlert(R.string.Dias_MSG_6)
                             }
                         }else{
-                            if (diferenciaHoras(binding.txtFini.text.toString(),binding.txtFFin.text.toString(),null)<30){
+                            if (diferenciaHoras(binding.btnFini.text.toString(),binding.btnFFin.text.toString(),null)<30){
                                 Guardar("Vacaciones")
                             }else{
                                 showAlert(R.string.Dias_MSG_5)
@@ -174,11 +183,11 @@ class SolicitarDias : AppCompatActivity(), NavigationView.OnNavigationItemSelect
                     }
                 }else{
                     showAlert(R.string.Dias_MSG_4)
-                    binding.txtFini.text=""
+                    binding.btnFini.setText(R.string.s_day)
                 }
             }else{
                 showAlert(R.string.Dias_MSG_3)
-                binding.txtFFin.text=""
+                binding.btnFFin.setText(R.string.s_day)
             }
         }else{
             showAlert(R.string.Dias_MSG_2)
@@ -206,8 +215,8 @@ class SolicitarDias : AppCompatActivity(), NavigationView.OnNavigationItemSelect
     private fun Guardar(t:String){
         val bundle:Bundle? = intent.extras
         val email = bundle?.getString("email").toString()
-        Sdias.add(Dias(binding.txtFini.text.toString(),binding.txtFFin.text.toString(),t,"Pendiente"))
-        Notifi.add(Notifica("Solicitar Días",nombre,"Pendiente",puesto,t,binding.txtFini.text.toString()+"-"+binding.txtFFin.text.toString()))
+        Sdias.add(Dias(binding.btnFini.text.toString(),binding.btnFFin.text.toString(),t,"Pendiente"))
+        Notifi.add(Notifica("Solicitar Días",nombre,"Pendiente",puesto,t,binding.btnFini.text.toString()+"-"+binding.btnFFin.text.toString(),perfil))
         //Se guardarán en modo HashMap (clave, valor).
         val user = hashMapOf(
             "DNI" to dni,
@@ -227,8 +236,8 @@ class SolicitarDias : AppCompatActivity(), NavigationView.OnNavigationItemSelect
             .document(email) //Será la clave del documento.
             .set(user).addOnSuccessListener {
                 showAlert(R.string.Dias_MSG_1)
-                binding.txtFini.text=""
-                binding.txtFFin.text=""
+                binding.btnFini.setText(R.string.s_day)
+                binding.btnFFin.setText(R.string.s_day)
                 //Toast.makeText(this, "Almacenado", Toast.LENGTH_SHORT).show()
             }.addOnFailureListener{
                 Toast.makeText(this, "Ha ocurrido un error", Toast.LENGTH_SHORT).show()

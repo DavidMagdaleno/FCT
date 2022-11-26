@@ -9,6 +9,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
+import android.widget.Button
 import android.widget.CalendarView
 import android.widget.EditText
 import android.widget.Toast
@@ -74,19 +75,19 @@ class Justificante : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             startActivityForResult(intent, File)
         }
 
-        binding.etxtFechaIni.setOnClickListener {
-            DialogLogin(binding.etxtFechaIni)
+        binding.btnFechaIni.setOnClickListener {
+            DialogLogin(binding.btnFechaIni)
         }
 
-        binding.etxtFechaFin.setOnClickListener {
-            DialogLogin(binding.etxtFechaFin)
+        binding.btnFechaFin.setOnClickListener {
+            DialogLogin(binding.btnFechaFin)
         }
 
         binding.btnAcp.setOnClickListener {
             if (archivo){
                 Guardar()
             }else{
-                showAlert()
+                showAlert(R.string.Alert_justify_2)
             }
         }
         binding.btnVol.setOnClickListener {
@@ -120,7 +121,7 @@ class Justificante : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
-    private fun DialogLogin(txt: EditText): Boolean {
+    private fun DialogLogin(txt: Button): Boolean {
         val dialogo: android.app.AlertDialog.Builder = android.app.AlertDialog.Builder(this)
         val Myview=layoutInflater.inflate(R.layout.item_calendar, null)
         val calendar = Myview.findViewById<CalendarView>(R.id.calendarView)
@@ -172,7 +173,7 @@ class Justificante : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private fun Guardar(){
         val bundle:Bundle? = intent.extras
         val email = bundle?.getString("email").toString()
-        arch.add(AJustificante(binding.etxtFechaIni.text.toString(),binding.etxtFechaFin.text.toString(),NomArch))
+        arch.add(AJustificante(binding.btnFechaIni.text.toString(),binding.btnFechaFin.text.toString(),NomArch))
         //Toast.makeText(this, "añadido",Toast.LENGTH_SHORT).show()
         //Se guardarán en modo HashMap (clave, valor).
         var user = hashMapOf(
@@ -193,16 +194,17 @@ class Justificante : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             .document(email) //Será la clave del documento.
             .set(user).addOnSuccessListener {
                 binding.txtResult.setText(R.string.Alert_justify_1)
+                showAlert(R.string.Alert_justify_1)
                 //Toast.makeText(this, "Almacenado", Toast.LENGTH_SHORT).show()
             }.addOnFailureListener{
                 Toast.makeText(this, "Ha ocurrido un error", Toast.LENGTH_SHORT).show()
             }
     }
 
-    private fun showAlert(){
+    private fun showAlert(t:Int){
         val builder = AlertDialog.Builder(this)
         builder.setTitle(R.string.Notificacion)
-        builder.setMessage(R.string.Alert_justify_2)
+        builder.setMessage(t)
         builder.setPositiveButton(R.string.Accept,null)
         val dialog: AlertDialog = builder.create()
         dialog.show()

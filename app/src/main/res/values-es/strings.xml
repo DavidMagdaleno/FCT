@@ -55,4 +55,6 @@
     <string name="Puesto">Puesto:</string>
     <string name="ap">Aprobar</string>
     <string name="dn">Denegar</string>
+    <string name="userError_1">No has seleccionado un perfil o has seleccionado demasiados</string>
+    <string name="userError_2">El trabajador no tiene asignado un puesto</string>
 </resources>

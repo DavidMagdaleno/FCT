@@ -78,10 +78,10 @@ class Notificacion : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     for (i in 0..Notifi.size-1){
                         var n=Notifi[i] as HashMap<String,String>
                         if (perf.equals("Admin")){
-                            auxNotifi.add(Notifica(n.getValue("titulo").toString(),n.getValue("trabajador"),n.getValue("estado"),n.getValue("puestoTrabajador"),n.getValue("tipo"),n.getValue("d")))
+                            auxNotifi.add(Notifica(n.getValue("titulo").toString(),n.getValue("trabajador"),n.getValue("estado"),n.getValue("puestoTrabajador"),n.getValue("tipo"),n.getValue("d"),n.getValue("p")))
                         }else{
-                            if (nob.equals(n.getValue("trabajador"))){
-                                auxNotifi.add(Notifica(n.getValue("titulo").toString(),n.getValue("trabajador"),n.getValue("estado"),n.getValue("puestoTrabajador"),n.getValue("tipo"),n.getValue("d")))
+                            if (nob.equals(n.getValue("trabajador")) && n.getValue("estado").equals("Realizado")){
+                                auxNotifi.add(Notifica(n.getValue("titulo").toString(),n.getValue("trabajador"),n.getValue("estado"),n.getValue("puestoTrabajador"),n.getValue("tipo"),n.getValue("d"),n.getValue("p")))
                             }
                         }
                     }
@@ -114,6 +114,7 @@ class Notificacion : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         callback.notificacionRecibido(aux);
                     }
                     val miAdapter = AdaptadorNotificacion(auxNotifi, this)
+                    AdaptadorNotificacion.perfilActual=perf
                     miRecyclerView.adapter = miAdapter
                 } else {
                     Log.e("wh", "Error getting documents.", task.exception)

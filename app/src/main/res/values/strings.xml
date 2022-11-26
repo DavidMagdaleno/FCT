@@ -58,4 +58,6 @@
     <string name="Puesto">Job:</string>
     <string name="ap">Pass</string>
     <string name="dn">Deny</string>
+    <string name="userError_1">You have not selected a profile or you have selected too many</string>
+    <string name="userError_2">The worker is not assigned a position</string>
 </resources>

@@ -95,10 +95,8 @@
                 android:id="@+id/imgRecycler"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:clickable="true"
-                android:onClick="tomarFoto"
-                android:scaleType="centerCrop"
-                app:srcCompat="@android:drawable/ic_menu_camera" />
+                android:clickable="false"
+                android:scaleType="centerInside" />
         </androidx.cardview.widget.CardView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

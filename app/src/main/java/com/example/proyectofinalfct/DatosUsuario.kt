@@ -16,6 +16,7 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.annotation.NonNull
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AlertDialog
 import androidx.core.view.GravityCompat
 import androidx.core.view.get
 import androidx.core.view.isVisible
@@ -81,8 +82,8 @@ class DatosUsuario : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         binding.spPuesto.setOnItemSelectedListener(object: AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, pos: Int, id: Long) {
-                var p = Opcion.puestos.get(pos)
-                puesto=p
+                var pu = Opcion.puestos.get(pos)
+                puesto=pu
             }
             override fun onNothingSelected(parent: AdapterView<*>?) {
             }
@@ -101,6 +102,7 @@ class DatosUsuario : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     antiImagen=it.get("Foto").toString()
                     recuperarFoto()
                 }
+                binding.txtP.text="Actual: "+it.get("Puesto").toString()
                 puesto=it.get("Puesto").toString()
                 rhoras=it.get("Registro") as ArrayList<RegistroL>
                 NJustifi=it.get("Justificante") as ArrayList<AJustificante>
@@ -122,18 +124,20 @@ class DatosUsuario : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             binding.cbUser.isVisible=false
             binding.txtDNI.isFocusable=false
             binding.txtDNI.isFocusableInTouchMode=false
-
-            binding.txtP.text="Actual: "+puesto
-
+            if (!per.equals("Admin")){
+                binding.spPuesto.isEnabled=false
+            }
         }
 
         binding.btnAcept.setOnClickListener {
             Thread.sleep(1000)
             if ((!binding.cbUser.isChecked && !binding.cbAdmin.isChecked) || (binding.cbUser.isChecked && binding.cbAdmin.isChecked)){
-                Log.e("ERROR","No has seleccionado un perfil o has seleccionado demasiados")
+                //Log.e("ERROR","No has seleccionado un perfil o has seleccionado demasiados")
+                showAlert(R.string.userError_1)
             }else{
                 if (puesto.equals("")){
-                    Log.e("ERROR","El trabajador no tiene asignado un puesto")
+                    //Log.e("ERROR","El trabajador no tiene asignado un puesto")
+                    showAlert(R.string.userError_2)
                 }else{
                     if (binding.cbUser.isChecked){ p="Usuario" }
                     if (binding.cbAdmin.isChecked){ p="Admin" }
@@ -303,6 +307,15 @@ class DatosUsuario : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 }
             }
         }
+    }
+
+    private fun showAlert(t:Int){
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("ERROR")
+        builder.setMessage(t)
+        builder.setPositiveButton(R.string.Accept,null)
+        val dialog: AlertDialog = builder.create()
+        dialog.show()
     }
 
     override fun onNavigationItemSelected(@NonNull menuItem: MenuItem): Boolean {
