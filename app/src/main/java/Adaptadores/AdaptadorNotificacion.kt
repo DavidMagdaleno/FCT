@@ -58,7 +58,7 @@ class AdaptadorNotificacion(var Noti: ArrayList<Notifica>, var  context: Context
 
 
         @RequiresApi(Build.VERSION_CODES.N)
-        @SuppressLint("ResourceAsColor")
+        @SuppressLint("ResourceAsColor", "NotifyDataSetChanged")
         fun bind(pers: Notifica, context: Context, pos: Int, miAdaptadorRecycler: AdaptadorNotificacion){
 
             titulo.text=pers.Titulo
@@ -133,7 +133,7 @@ class AdaptadorNotificacion(var Noti: ArrayList<Notifica>, var  context: Context
                                                 db.document(email).set(user).addOnSuccessListener {
                                                 }.addOnFailureListener{
                                                 }
-                                                miAdaptadorRecycler.Noti.removeAt(pos)
+                                                //miAdaptadorRecycler.Noti.removeAt(pos)
                                             }
                                         }
                                     })
@@ -180,7 +180,7 @@ class AdaptadorNotificacion(var Noti: ArrayList<Notifica>, var  context: Context
                                                 db.document(email).set(user).addOnSuccessListener {
                                                 }.addOnFailureListener{
                                                 }
-                                                miAdaptadorRecycler.Noti.removeAt(pos)
+                                                //miAdaptadorRecycler.Noti.removeAt(pos)
                                             }
                                         }
                                     })

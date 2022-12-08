@@ -41,8 +41,9 @@ tools:openDrawer="start">
             tools:layout="@layout/fragment_head" />
 
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="574dp"
+            android:id="@+id/linearLayout6"
+            android:layout_width="410dp"
+            android:layout_height="490dp"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -80,14 +81,21 @@ tools:openDrawer="start">
                 android:layout_width="match_parent"
                 android:layout_height="436dp" />
 
-            <Button
-                android:id="@+id/btnVolv"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="35dp"
-                android:backgroundTint="@color/bluespecial"
-                android:text="@string/back" />
         </LinearLayout>
+
+        <Button
+            android:id="@+id/btnVolv"
+            android:layout_width="324dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:backgroundTint="@color/bluespecial"
+            android:text="@string/back"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.494"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout6"
+            app:layout_constraintVertical_bias="0.0" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
@@ -99,6 +107,8 @@ tools:openDrawer="start">
     android:layout_gravity="start"
     android:fitsSystemWindows="false"
     app:headerLayout="@layout/nav_header"
-    app:menu="@menu/main_menu" />
+    app:menu="@menu/main_menu" >
+
+</com.google.android.material.navigation.NavigationView>
 
 </androidx.drawerlayout.widget.DrawerLayout>

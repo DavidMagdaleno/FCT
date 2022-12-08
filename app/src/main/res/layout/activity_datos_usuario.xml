@@ -48,8 +48,8 @@ tools:openDrawer="start">
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.491"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.94">
+            app:layout_constraintTop_toBottomOf="@+id/toolbar"
+            app:layout_constraintVertical_bias="0.0">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -58,10 +58,10 @@ tools:openDrawer="start">
 
                 <TextView
                     android:id="@+id/textView13"
-                    android:layout_width="236dp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="DNI:"
+                    android:text="@string/dni"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
@@ -70,7 +70,7 @@ tools:openDrawer="start">
                     android:layout_width="236dp"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:hint="DNI"
+                    android:hint="@string/dni"
                     android:inputType="textPersonName" />
             </LinearLayout>
 
@@ -81,7 +81,7 @@ tools:openDrawer="start">
 
                 <TextView
                     android:id="@+id/textView15"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/name"
@@ -104,7 +104,7 @@ tools:openDrawer="start">
 
                 <TextView
                     android:id="@+id/textView16"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/surname"
@@ -127,7 +127,7 @@ tools:openDrawer="start">
 
                 <TextView
                     android:id="@+id/textView17"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/address"
@@ -150,7 +150,7 @@ tools:openDrawer="start">
 
                 <TextView
                     android:id="@+id/textView18"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/birth_date"
@@ -265,7 +265,6 @@ tools:openDrawer="start">
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/bluespecial"
-                    android:onClick="volver"
                     android:text="@string/back" />
             </LinearLayout>
 

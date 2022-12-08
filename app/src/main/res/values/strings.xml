@@ -1,7 +1,6 @@
 <resources>
     <string name="app_name" translatable="false">In Time</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="cancel" translatable="false">0</string>
     <string name="ok" translatable="false">1</string>
     <string name="Alert_justify_1">Proof uploaded successfully</string>
@@ -14,6 +13,7 @@
     <string name="Login_Error_3">An error occurred authenticating the user</string>
     <string name="Jornada_msg_1">The working day has started</string>
     <string name="Jornada_msg_2">The working day has been completed</string>
+    <string name="Jornada_msg_4">The working day is complete</string>
     <string name="Jornada_msg_3">A previous business day is not closed, please contact HR</string>
     <string name="Dias_MSG_1">Successfully requested days</string>
     <string name="Dias_MSG_2">You have not selected the dates</string>
@@ -60,4 +60,7 @@
     <string name="dn">Deny</string>
     <string name="userError_1">You have not selected a profile or you have selected too many</string>
     <string name="userError_2">The worker is not assigned a position</string>
+    <string name="dni">DNI:</string>
+    <string name="personal_data_msg_1">Changes saved successfully</string>
+    <string name="personal_data_msg_2">Something went wrong</string>
 </resources>

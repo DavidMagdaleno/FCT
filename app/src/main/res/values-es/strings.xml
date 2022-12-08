@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="Alert_justify_1">Justificante subido con exito</string>
+    <string name="Alert_justify_1">Justificante subido con éxito</string>
     <string name="Notificacion">NOTIFICATION</string>
     <string name="Alert_justify_2">No se ha adjuntado ningún archivo</string>
     <string name="Accept">Aceptar</string>
@@ -11,14 +11,13 @@
     <string name="Jornada_msg_1">Se ha iniciado la jornada laboral</string>
     <string name="Jornada_msg_2">Se ha completado la jornada laboral</string>
     <string name="Jornada_msg_3">Una jornada laboral anterior esta sin cerrar, por favor pongase en contacto con RRHH</string>
-    <string name="Dias_MSG_1">Días solicitados con exito</string>
+    <string name="Dias_MSG_1">Días solicitados con éxito</string>
     <string name="Dias_MSG_2">No has seleccionado las fechas</string>
     <string name="Dias_MSG_3">La Fecha de fin no puede ser anterior a la de inicio</string>
     <string name="Dias_MSG_4">La Fecha de inicio no puede ser anterior a la fecha actual</string>
     <string name="Dias_MSG_5">Has seleccionado mas de 30 días de vacaciones</string>
-    <string name="hello_blank_fragment">Hola</string>
-    <string name="Dias_MSG_6">Has superado el número maximo de días de vacaciones</string>
-    <string name="Dias_MSG_7">Solo se pueden pedir un dias de asuntos propios por separado</string>
+    <string name="Dias_MSG_6">Has superado el número máximo de días de vacaciones</string>
+    <string name="Dias_MSG_7">Solo se pueden pedir un días de asuntos propios por separado</string>
     <string name="Dias_MSG_8">Selecciona el tipo de días que quieres solicitar</string>
     <string name="datos_personales">Datos Personales</string>
     <string name="solicitar_das">Solicitar Días</string>
@@ -57,4 +56,8 @@
     <string name="dn">Denegar</string>
     <string name="userError_1">No has seleccionado un perfil o has seleccionado demasiados</string>
     <string name="userError_2">El trabajador no tiene asignado un puesto</string>
+    <string name="dni">DNI:</string>
+    <string name="personal_data_msg_1">Cambios guardados correctamente</string>
+    <string name="personal_data_msg_2">Ha ha salido mal</string>
+    <string name="Jornada_msg_4">La jornada laboral está completa</string>
 </resources>

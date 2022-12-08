@@ -5,8 +5,10 @@ import Model.Dias
 import Model.Notifica
 import Model.RegistroL
 import Opciones.Opcion
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
@@ -15,6 +17,7 @@ import android.widget.CalendarView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.NonNull
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.GravityCompat
@@ -47,11 +50,11 @@ class SolicitarDias : AppCompatActivity(), NavigationView.OnNavigationItemSelect
     private var Notifi = ArrayList<Notifica>()
 
 
+    @RequiresApi(Build.VERSION_CODES.P)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding= ActivitySolicitarDiasBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         binding.navigationView.setNavigationItemSelectedListener(this)
 
         val toggle = ActionBarDrawerToggle(this,binding.drawerLayout,binding.toolbar,
@@ -65,13 +68,6 @@ class SolicitarDias : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         val email = bundle?.getString("email").toString()
         val per = bundle?.getString("perfil").toString()
 
-        /*binding.btnDias.setOnClickListener {
-            if (binding.txtFini.text.isNullOrEmpty()){
-                DialogLogin(binding.txtFini)
-            }else{
-                DialogLogin(binding.txtFFin)
-            }
-        }*/
 
         binding.btnFini.setOnClickListener {
             DialogLogin(binding.btnFini)
@@ -101,7 +97,7 @@ class SolicitarDias : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         }
 
     }
-
+    //llamada al calendario para seleccionar la fecha de inicio y fin
     private fun DialogLogin(txt: Button): Boolean {
         val dialogo: android.app.AlertDialog.Builder = android.app.AlertDialog.Builder(this)
         val Myview=layoutInflater.inflate(R.layout.item_calendar, null)
@@ -148,7 +144,7 @@ class SolicitarDias : AppCompatActivity(), NavigationView.OnNavigationItemSelect
             Toast.makeText(this, "Algo ha ido mal al recuperar", Toast.LENGTH_SHORT).show()
         }
     }
-
+    //comprueba las fechas de inicio y fin, para sacar evitar errores a la hora de solicitar los dias
     private fun comprobaryGuardar(){
         if (!binding.btnFini.text.equals(R.string.s_day) && !binding.btnFFin.text.equals(R.string.s_day)){
             if (diferenciaHoras(binding.btnFini.text.toString(),binding.btnFFin.text.toString(),null)>=0){
@@ -253,6 +249,7 @@ class SolicitarDias : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         dialog.show()
     }
 
+
     override fun onBackPressed() {
         if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
             binding.drawerLayout.closeDrawer(GravityCompat.START)
@@ -261,7 +258,7 @@ class SolicitarDias : AppCompatActivity(), NavigationView.OnNavigationItemSelect
         }
     }
 
-    override fun onNavigationItemSelected(@NonNull menuItem: MenuItem): Boolean {
+    override fun onNavigationItemSelected( menuItem: MenuItem): Boolean {
         val bundle:Bundle? = intent.extras
         val email = bundle?.getString("email").toString()
         val per = bundle?.getString("perfil").toString()

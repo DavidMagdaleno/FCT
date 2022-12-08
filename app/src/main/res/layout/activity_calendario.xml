@@ -52,8 +52,8 @@ tools:openDrawer="start">
 
         <Button
             android:id="@+id/btnVolve"
-            android:layout_width="246dp"
-            android:layout_height="45dp"
+            android:layout_width="324dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="90dp"
             android:backgroundTint="@color/bluespecial"
             android:text="@string/back"

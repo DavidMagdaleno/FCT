@@ -2,9 +2,11 @@ package com.example.proyectofinalfct
 
 import Model.*
 import Opciones.Opcion
+import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -15,6 +17,7 @@ import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.annotation.NonNull
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.GravityCompat
@@ -44,11 +47,11 @@ class DatosUsuario : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private val db = FirebaseFirestore.getInstance()
     lateinit var binding: ActivityDatosUsuarioBinding
     //private val cameraRequest=1888
+    @RequiresApi(Build.VERSION_CODES.P)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding= ActivityDatosUsuarioBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
 
         binding.navigationView.setNavigationItemSelectedListener(this)
 
@@ -80,6 +83,7 @@ class DatosUsuario : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val adaptador = ArrayAdapter(this, R.layout.item_sppuesto,R.id.txtPuesto,Opcion.puestos)
         binding.spPuesto.adapter = adaptador
 
+        //incluir los tipos de puesto en el spinner
         binding.spPuesto.setOnItemSelectedListener(object: AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, pos: Int, id: Long) {
                 var pu = Opcion.puestos.get(pos)
@@ -90,6 +94,7 @@ class DatosUsuario : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         })
         
         if (modi=="Modificar"){
+            //recuperar los datos del usuario y mostralos en los respectivos campos
             db.collection("usuarios").document(email).get().addOnSuccessListener {
                 //Si encuentra el documento será satisfactorio este listener y entraremos en él.
                 binding.txtDNI.setText(it.get("DNI").toString())
@@ -120,6 +125,7 @@ class DatosUsuario : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 Toast.makeText(this, "Algo ha ido mal al recuperar",Toast.LENGTH_SHORT).show()
             }
 
+            //impedir que el usuario pueda acceder o modificar el DNI
             binding.cbAdmin.isVisible=false
             binding.cbUser.isVisible=false
             binding.txtDNI.isFocusable=false
@@ -130,6 +136,7 @@ class DatosUsuario : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
 
         binding.btnAcept.setOnClickListener {
+            //utilizado para evitar errores al guardar debido a los tiempos de la coroutinas de cambiar foto de perfil
             Thread.sleep(1000)
             if ((!binding.cbUser.isChecked && !binding.cbAdmin.isChecked) || (binding.cbUser.isChecked && binding.cbAdmin.isChecked)){
                 //Log.e("ERROR","No has seleccionado un perfil o has seleccionado demasiados")
@@ -139,32 +146,39 @@ class DatosUsuario : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     //Log.e("ERROR","El trabajador no tiene asignado un puesto")
                     showAlert(R.string.userError_2)
                 }else{
+                    //se guardan o sobreescriben los nuevos datos de usuario
                     if (binding.cbUser.isChecked){ p="Usuario" }
                     if (binding.cbAdmin.isChecked){ p="Admin" }
-                    //Se guardarán en modo HashMap (clave, valor).
-                    var user = hashMapOf(
-                        "DNI" to binding.txtDNI.text.trim().toString(),
-                        "Nombre" to binding.txtName.text.toString(),
-                        "Apellidos" to binding.txtApe.text.toString(),
-                        "Direccion" to binding.txtDire.text.toString(),
-                        "FechaNac" to binding.txtNac.text.toString(),
-                        "Foto" to perfil.nombre,
-                        "Registro" to rhoras,
-                        "Justificante" to NJustifi,
-                        "Dias" to Sdias,
-                        "Perfil" to p,
-                        "Puesto" to puesto,
-                        "Notificacion" to Notifi
-                    )
 
-                    db.collection("usuarios")//añade o sebreescribe
-                        .document(email) //Será la clave del documento.
-                        .set(user).addOnSuccessListener {
-                            Toast.makeText(this, "Almacenado", Toast.LENGTH_SHORT).show()
-                            finish()
-                        }.addOnFailureListener{
-                            Toast.makeText(this, "Ha ocurrido un error", Toast.LENGTH_SHORT).show()
-                        }
+                    if (binding.txtName.text.isNullOrEmpty() || binding.txtApe.text.isNullOrEmpty() || binding.txtNac.text.isNullOrEmpty() || binding.txtDire.text.isNullOrEmpty()){
+                        showAlert(R.string.Login_Error_2)
+                    }else{
+                        //Se guardarán en modo HashMap (clave, valor).
+                        var user = hashMapOf(
+                            "DNI" to binding.txtDNI.text.trim().toString(),
+                            "Nombre" to binding.txtName.text.toString(),
+                            "Apellidos" to binding.txtApe.text.toString(),
+                            "Direccion" to binding.txtDire.text.toString(),
+                            "FechaNac" to binding.txtNac.text.toString(),
+                            "Foto" to perfil.nombre,
+                            "Registro" to rhoras,
+                            "Justificante" to NJustifi,
+                            "Dias" to Sdias,
+                            "Perfil" to p,
+                            "Puesto" to puesto,
+                            "Notificacion" to Notifi
+                        )
+
+                        db.collection("usuarios")//añade o sebreescribe
+                            .document(email) //Será la clave del documento.
+                            .set(user).addOnSuccessListener {
+                                showAlert(R.string.personal_data_msg_1)
+                                //Toast.makeText(this, "Almacenado", Toast.LENGTH_SHORT).show()
+                            }.addOnFailureListener{
+                                showAlert(R.string.personal_data_msg_2)
+                                //Toast.makeText(this, "Ha ocurrido un error", Toast.LENGTH_SHORT).show()
+                            }
+                    }
                 }
             }
         }
@@ -203,31 +217,21 @@ class DatosUsuario : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     Log.e("Conseguido","Archivo subido con exito")
                     perfil.nombre = FileUri!!.lastPathSegment.toString()
                     try {
-
                         mostarimagenes(object : DatosUsuario.RolCallback {
                             override fun imagenes(imaNuevo: ImgPerfil) {
                                 //var miAdapter = AdaptadorFotos(imaNuevo, this@Galeria)
                                 //miRecyclerView.adapter = miAdapter
                             }
                         })
-
                     } catch (e: InterruptedException) {
                         e.printStackTrace()
                     }
                     limpiarDatos(email)
-                    // taskSnapshot.metadata contains file metadata such as size, content-type, etc.
-                    // ...
                 }
-
             }
         }
-
-        //if (requestCode==cameraRequest){
-            //val photo:Bitmap=data?.extras?.get("data") as Bitmap
-            //binding.imgFoto.setImageBitmap(photo)
-        //}
     }
-
+    //cuando se guarda una nueva imagen de perfil se borrar la anterior para evitar almacenamiento masivo
     private fun limpiarDatos(email:String){
         val imagenRef = ref2.child("Perfiles/"+email+"/${antiImagen}")
         imagenRef.delete().addOnSuccessListener { taskSnapshot ->
@@ -261,7 +265,7 @@ class DatosUsuario : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     fun getBitmap(image: ByteArray): Bitmap? {
         return BitmapFactory.decodeByteArray(image, 0, image.size)
     }
-
+    //mostrar la imagen de perfil
     fun mostarimagenes( callback:RolCallback) {
         val bundle: Bundle? = intent.extras
         val email = bundle?.getString("email").toString()
@@ -285,7 +289,7 @@ class DatosUsuario : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             callback.imagenes(perfil);
         }
     }
-
+    //Recuperar la imagen de perfil si es que tiene alguna
     fun recuperarFoto(){
         val bundle: Bundle? = intent.extras
         val email = bundle?.getString("email").toString()
@@ -308,7 +312,7 @@ class DatosUsuario : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
         }
     }
-
+    //mostrar notificaciones
     private fun showAlert(t:Int){
         val builder = AlertDialog.Builder(this)
         builder.setTitle("ERROR")
@@ -318,7 +322,8 @@ class DatosUsuario : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         dialog.show()
     }
 
-    override fun onNavigationItemSelected(@NonNull menuItem: MenuItem): Boolean {
+
+    override fun onNavigationItemSelected( menuItem: MenuItem): Boolean {
         val bundle:Bundle? = intent.extras
         val email = bundle?.getString("email").toString()
         when (menuItem.itemId) {

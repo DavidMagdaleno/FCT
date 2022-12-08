@@ -10,6 +10,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
@@ -38,6 +39,7 @@ class AdaptadorHorasExtra(var horas : ArrayList<HExtra>, var  context: Context):
         private val fecha = view.findViewById(R.id.txtFechaHe) as TextView
         private val he = view.findViewById(R.id.txtNhe) as TextView
         private val pu = view.findViewById(R.id.txtPuest) as TextView
+        private val ly = view.findViewById(R.id.layoutExtra) as LinearLayout
 
 
         @SuppressLint("ResourceAsColor")
@@ -49,8 +51,9 @@ class AdaptadorHorasExtra(var horas : ArrayList<HExtra>, var  context: Context):
             //avatar.setImageBitmap(pers.img)
 
             if (pers.Horas.toInt() > 0) {
-                fecha.setTextColor(R.color.green)
-                he.setTextColor(R.color.green)
+                //fecha.setTextColor(R.color.green)
+                //he.setTextColor(R.color.green)
+                ly.setBackgroundColor(R.color.green)
             }
 
 

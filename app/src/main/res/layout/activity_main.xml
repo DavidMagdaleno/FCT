@@ -64,6 +64,7 @@
             android:layout_height="wrap_content"
             android:backgroundTint="@color/bluespecial"
             android:text="Prueba Registro" />
+
     </LinearLayout>
 
     <ImageView

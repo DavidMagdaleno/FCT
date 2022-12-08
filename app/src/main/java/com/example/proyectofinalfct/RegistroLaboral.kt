@@ -4,6 +4,7 @@ import Model.AJustificante
 import Model.Dias
 import Model.Notifica
 import Model.RegistroL
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Build
@@ -54,11 +55,11 @@ class RegistroLaboral : AppCompatActivity(), NavigationView.OnNavigationItemSele
 
 
     private val db = FirebaseFirestore.getInstance()
+    @RequiresApi(Build.VERSION_CODES.P)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding= ActivityRegistroLaboralBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         binding.navigationView.setNavigationItemSelectedListener(this)
 
         val toggle = ActionBarDrawerToggle(this,binding.drawerLayout,binding.toolbar,
@@ -96,7 +97,7 @@ class RegistroLaboral : AppCompatActivity(), NavigationView.OnNavigationItemSele
     }
 
 
-
+    //Sacar datos del usuario
     private fun RegistroOnline(){
         val bundle:Bundle? = intent.extras
         val email = bundle?.getString("email").toString()
@@ -119,6 +120,7 @@ class RegistroLaboral : AppCompatActivity(), NavigationView.OnNavigationItemSele
             Toast.makeText(this, "Algo ha ido mal al recuperar",Toast.LENGTH_SHORT).show()
         }
     }
+    //sacar los registros laborales y actualizarlos
     private fun sacarRegistro(){
         var contiene:Boolean=false
         try {
@@ -130,9 +132,11 @@ class RegistroLaboral : AppCompatActivity(), NavigationView.OnNavigationItemSele
                         val x=rhoras[i] as HashMap<String, String>
                         if (rhoras.isNotEmpty()){
                             x.forEach { (key,value) ->
+                                //comprueba que no hay ningun registro anterior sin cerrar en caso contrario muestra una notificacion
                                 if ((key.equals("horaFin") && value.equals("")) && (key.equals("fecha") && !value.equals(currentdate.toString())) ){
                                     showAlert(R.string.Jornada_msg_3)
                                 }
+                                //si hay un registro existente en la fecha actual pone la fecha de finalizacion
                                 if (key.equals("fecha") && value.equals(currentdate.toString())){
                                     contiene=true
                                     if (Rbarra!=0){
@@ -144,15 +148,20 @@ class RegistroLaboral : AppCompatActivity(), NavigationView.OnNavigationItemSele
                                         }
                                         Rbarra=0
                                     }else{
-                                        x.replace("horaFin", currenthour.toString())
-                                        contiene=true
-                                        accion=1
-                                        guardado(em)
+                                        if (!x.getValue("horaFin").equals("")){
+                                            showAlert(R.string.Jornada_msg_4)
+                                        }else{
+                                            x.replace("horaFin", currenthour.toString())
+                                            contiene=true
+                                            accion=1
+                                            guardado(em)
+                                        }
                                     }
                                 }
                             }
                         }
                     }
+                    //en caso de no haber registro de la fecha actual crea uno
                     if (!contiene && r){
                         rhoras.add(RegistroL(currentdate.toString(),currenthour.toString(),""))
                         accion=0
@@ -164,7 +173,7 @@ class RegistroLaboral : AppCompatActivity(), NavigationView.OnNavigationItemSele
             e.printStackTrace()
         }
     }
-
+    //genera qr con el registro de inicio o finalizacion segun corresponda
     private fun sacarRegistroQr(){
         var contiene:Boolean=false
         try {
@@ -224,7 +233,7 @@ class RegistroLaboral : AppCompatActivity(), NavigationView.OnNavigationItemSele
                 }
             }
     }
-
+    //guarda el registro del día
     fun guardado(email:String){
         //Se guardarán en modo HashMap (clave, valor).
         val user = hashMapOf(
@@ -272,6 +281,7 @@ class RegistroLaboral : AppCompatActivity(), NavigationView.OnNavigationItemSele
         dialog.show()
     }
 
+
     override fun onBackPressed() {
         if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
             binding.drawerLayout.closeDrawer(GravityCompat.START)
@@ -280,7 +290,7 @@ class RegistroLaboral : AppCompatActivity(), NavigationView.OnNavigationItemSele
         }
     }
 
-    override fun onNavigationItemSelected(@NonNull menuItem: MenuItem): Boolean {
+    override fun onNavigationItemSelected( menuItem: MenuItem): Boolean {
         val bundle:Bundle? = intent.extras
         val email = bundle?.getString("email").toString()
         val per = bundle?.getString("perfil").toString()

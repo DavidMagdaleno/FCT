@@ -43,8 +43,8 @@ tools:openDrawer="start">
 
         <LinearLayout
             android:id="@+id/linearLayout2"
-            android:layout_width="0dp"
-            android:layout_height="109dp"
+            android:layout_width="410dp"
+            android:layout_height="96dp"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -82,8 +82,8 @@ tools:openDrawer="start">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:layout_marginTop="20dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="15dp"
                 android:layout_weight="1"
                 android:orientation="horizontal">
 
@@ -95,7 +95,8 @@ tools:openDrawer="start">
                     android:text="@string/H_actual"
                     android:textAlignment="center"
                     android:textSize="20sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    tools:ignore="NestedWeights" />
 
                 <TextView
                     android:id="@+id/txtHora"
@@ -146,7 +147,7 @@ tools:openDrawer="start">
                 android:id="@+id/btnRegistro"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="15dp"
                 android:layout_marginBottom="20dp"
                 android:backgroundTint="@color/bluespecial"
                 android:text="@string/jornada_online"
@@ -158,7 +159,7 @@ tools:openDrawer="start">
                 android:id="@+id/btnQr"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="30dp"
+                android:layout_marginBottom="15dp"
                 android:backgroundTint="@color/bluespecial"
                 android:text="@string/qr"
                 android:textSize="16sp"

@@ -123,8 +123,8 @@ tools:openDrawer="start">
 
         <Button
             android:id="@+id/btnSubir"
-            android:layout_width="211dp"
-            android:layout_height="54dp"
+            android:layout_width="324dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="40dp"
             android:backgroundTint="@color/bluespecial"
             android:text="@string/Upload_document"
@@ -136,8 +136,8 @@ tools:openDrawer="start">
 
         <Button
             android:id="@+id/btnAcp"
-            android:layout_width="212dp"
-            android:layout_height="48dp"
+            android:layout_width="324dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:backgroundTint="@color/bluespecial"
             android:text="@string/Accept"
@@ -162,8 +162,8 @@ tools:openDrawer="start">
 
         <Button
             android:id="@+id/btnVol"
-            android:layout_width="212dp"
-            android:layout_height="48dp"
+            android:layout_width="324dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="80dp"
             android:backgroundTint="@color/bluespecial"
             android:text="@string/back"

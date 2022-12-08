@@ -1,14 +1,12 @@
 package com.example.proyectofinalfct
 
 
-import Model.RegistroL
+
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
-import android.widget.ArrayAdapter
-import androidx.annotation.NonNull
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
@@ -18,17 +16,18 @@ import com.google.android.material.navigation.NavigationView
 import com.google.firebase.firestore.FirebaseFirestore
 
 
+
 class Menu : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener{
     private lateinit var binding: ActivityMenuBinding
     private val db = FirebaseFirestore.getInstance()
     private lateinit var intenMenu:Intent
     private var em=""
     private var perfil=""
+    @RequiresApi(Build.VERSION_CODES.P)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding= ActivityMenuBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
 
         binding.navigationView.setNavigationItemSelectedListener(this)
 
@@ -147,7 +146,6 @@ class Menu : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
     }
 
 
-
     override fun onBackPressed() {
         if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
             binding.drawerLayout.closeDrawer(GravityCompat.START)
@@ -156,7 +154,7 @@ class Menu : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListene
         }
     }
 
-    override fun onNavigationItemSelected(@NonNull menuItem: MenuItem): Boolean {
+    override fun onNavigationItemSelected( menuItem: MenuItem): Boolean {
         val bundle:Bundle? = intent.extras
         val email = bundle?.getString("email").toString()
         intenMenu = when (menuItem.itemId) {

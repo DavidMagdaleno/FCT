@@ -1,18 +1,17 @@
 package com.example.proyectofinalfct
 
 import Model.Dias
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
-import android.widget.Toast
-import androidx.annotation.NonNull
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import com.example.proyectofinalfct.databinding.ActivityCalendarioBinding
 import com.google.android.material.navigation.NavigationView
@@ -21,18 +20,24 @@ import sun.bob.mcalendarview.MarkStyle
 import java.text.SimpleDateFormat
 import java.util.*
 
+
 class Calendario : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     lateinit var binding:ActivityCalendarioBinding
     private lateinit var intenMenu: Intent
     private val db = FirebaseFirestore.getInstance()
-    private var sDias = ArrayList<Dias>()
+    var sDias = ArrayList<Dias>()
+    var em=""
+    var context=this
 
+
+    @RequiresApi(Build.VERSION_CODES.P)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding= ActivityCalendarioBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         binding.navigationView.setNavigationItemSelectedListener(this)
+
 
         val toggle = ActionBarDrawerToggle(this,binding.drawerLayout,binding.toolbar,
             R.string.ok,
@@ -43,18 +48,20 @@ class Calendario : AppCompatActivity(), NavigationView.OnNavigationItemSelectedL
 
         val bundle:Bundle? = intent.extras
         val email = bundle?.getString("email").toString()
+        em=email
         val per = bundle?.getString("perfil").toString()
 
         sacarRegistro()
 
         binding.btnVolve.setOnClickListener {
-           intenMenu= Intent(this,Menu::class.java).apply { putExtra("email",email) }
+           intenMenu= Intent(this,Menu::class.java).apply { putExtra("email",email);putExtra("perfil",per) }
             startActivity(intenMenu)
         }
 
     }
 
-    private fun sacarRegistro(){
+
+    fun sacarRegistro(){
         var dias=0
         var me="";var d="";var y=""
         try {
@@ -62,6 +69,7 @@ class Calendario : AppCompatActivity(), NavigationView.OnNavigationItemSelectedL
                 @RequiresApi(Build.VERSION_CODES.N)
                 override fun diasRecibido(DiasNuevo: ArrayList<Dias>) {
                     sDias = DiasNuevo
+                    //Manipular el arraylist de Dias para seleccionar los dias en el calendario en funcion de su tipo y estado
                     for (i in 0 until sDias.size){
                         val x=sDias[i] as HashMap<String, String>
                         if (sDias.isNotEmpty()){
@@ -114,11 +122,8 @@ class Calendario : AppCompatActivity(), NavigationView.OnNavigationItemSelectedL
         fun diasRecibido(DiasNuevo: ArrayList<Dias>)
     }
 
-    private fun recuperarRegistro( callback:RolCallback){
-        val bundle:Bundle? = intent.extras
-        val email = bundle?.getString("email").toString()
-
-        db.collection("usuarios").document(email).get()
+    fun recuperarRegistro( callback:RolCallback){
+        db.collection("usuarios").document(em).get()
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     //poner los demas para recuperar todos los datos
@@ -132,6 +137,7 @@ class Calendario : AppCompatActivity(), NavigationView.OnNavigationItemSelectedL
             }
     }
 
+    //sacar el numero de dias entre la fecha de inicio y la de fin
     fun diferenciaHoras(fe1:String, fe2:String): Long{
         var f1=stringtodate(fe1)
         var f2=stringtodate(fe2)
@@ -145,6 +151,7 @@ class Calendario : AppCompatActivity(), NavigationView.OnNavigationItemSelectedL
         val datep = formatter.parse(t)
         return datep
     }
+
     private fun showAlert(t:String){
         val builder = AlertDialog.Builder(this)
         builder.setTitle(R.string.Notificacion)
@@ -154,31 +161,28 @@ class Calendario : AppCompatActivity(), NavigationView.OnNavigationItemSelectedL
         dialog.show()
     }
 
+    //dado que la fechas estan en string es necesario este metodo para evitar errores al pasar de mes
     private fun pasarMes(m:String, d:Int):String{
         var me:String=""
         if ((m.toInt())%2==0){
             me = if (m.toInt()==2){
                 if (d>28){
                     (m.toInt()+1).toString()
-                }else{
-                    m
-                }
+                }else{ m }
             }else{
                 if (d>30){
                     (m.toInt()+1).toString()
-                }else{
-                    m
-                }
+                }else{ m }
             }
         }else{
             me = if (d>31){
                 (m.toInt()+1).toString()
-            }else{
-                m
-            }
+            }else{ m }
         }
         return me
     }
+
+
 
     override fun onBackPressed() {
         if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
@@ -188,7 +192,7 @@ class Calendario : AppCompatActivity(), NavigationView.OnNavigationItemSelectedL
         }
     }
 
-    override fun onNavigationItemSelected(@NonNull menuItem: MenuItem): Boolean {
+    override fun onNavigationItemSelected( menuItem: MenuItem): Boolean {
         val bundle:Bundle? = intent.extras
         val email = bundle?.getString("email").toString()
         val per = bundle?.getString("perfil").toString()
@@ -206,5 +210,6 @@ class Calendario : AppCompatActivity(), NavigationView.OnNavigationItemSelectedL
         startActivity(intenMenu)
         return true
     }
+
 
 }

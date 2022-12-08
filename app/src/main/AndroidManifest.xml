@@ -14,20 +14,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ProyectoFinalFCT">
         <activity
+            android:name=".MainActivity2"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".Notificacion"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-
-        <meta-data
-            android:name="com.google.android.actions"
-            android:resource="@xml/splash" />
-
-        <activity
-            android:name=".Splashscreen"
-            android:exported="true" />
         <activity
             android:name=".Calendario"
             android:exported="false">

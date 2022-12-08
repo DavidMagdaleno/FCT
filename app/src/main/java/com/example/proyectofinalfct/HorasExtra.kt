@@ -6,6 +6,7 @@ import Model.Dias
 import Model.HExtra
 import Model.RegistroL
 import Opciones.Opcion
+import android.content.Context
 import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
@@ -25,6 +26,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.proyectofinalfct.databinding.ActivityHorasExtraBinding
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.firestore.FirebaseFirestore
+
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -32,7 +34,6 @@ import kotlin.collections.ArrayList
 class HorasExtra : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private lateinit var binding: ActivityHorasExtraBinding
     private lateinit var intenMenu: Intent
-    //private var meses= arrayOf("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre")
     private var m = ArrayList<String>()
     private var rhorasextra = ArrayList<HExtra>()
     private lateinit var miRecyclerView : RecyclerView
@@ -54,11 +55,11 @@ class HorasExtra : AppCompatActivity(), NavigationView.OnNavigationItemSelectedL
     private var perfil=""
     private var puesto=""
 
+    @RequiresApi(Build.VERSION_CODES.P)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding= ActivityHorasExtraBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         binding.navigationView.setNavigationItemSelectedListener(this)
 
         val toggle = ActionBarDrawerToggle(this,binding.drawerLayout,binding.toolbar,
@@ -73,22 +74,17 @@ class HorasExtra : AppCompatActivity(), NavigationView.OnNavigationItemSelectedL
         val per = bundle?.getString("perfil").toString()
         em=email
 
-        //miRecyclerView = findViewById(R.id.rvHe) as RecyclerView
         miRecyclerView = binding.rvHe
         miRecyclerView.setHasFixedSize(true)
         miRecyclerView.layoutManager = LinearLayoutManager(this)
 
-        /*
-            var miAdapter = AdaptadorHorasExtra(rhorasextra, this@HorasExtra)
-            miRecyclerView.adapter = miAdapter
-        */
         Recuperar()
         sacarMeses()
 
+        //Mostrar meses en el spinner
         binding.spMeses.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, pos: Int, id: Long) {
                 val p = m[pos]
-                //val num=meses.indexOf(p)+1
                 val num=Opcion.meses.indexOf(p)+1
                 mostrarHoras(num.toString())
             }
@@ -102,7 +98,7 @@ class HorasExtra : AppCompatActivity(), NavigationView.OnNavigationItemSelectedL
             startActivity(intenMenu)
         }
     }
-
+    //Recuperar los datos del usuario para luego mostrarlos
     private fun Recuperar(){
         val bundle:Bundle? = intent.extras
         val email = bundle?.getString("email").toString()
@@ -130,7 +126,7 @@ class HorasExtra : AppCompatActivity(), NavigationView.OnNavigationItemSelectedL
         val datep = formatter.parse(t)
         return datep
     }
-
+    //recuperar los meses que de los que se tenga registro para luego mostrarlos en el spinner
     private fun sacarMeses(){
         var repme=""
         try {
@@ -161,7 +157,7 @@ class HorasExtra : AppCompatActivity(), NavigationView.OnNavigationItemSelectedL
     interface RolCallback {
         fun horasRecibido(h: ArrayList<RegistroL>)
     }
-
+    //recuperar el arraylist de resgitro laboral para sacar luego los meses de los que hay registros
     fun recuperarRegistro( callback:RolCallback){
         db.collection("usuarios").document(em).get()
             .addOnCompleteListener { task ->
@@ -178,7 +174,7 @@ class HorasExtra : AppCompatActivity(), NavigationView.OnNavigationItemSelectedL
                 }
             }
     }
-
+    //Mostrar las horas extra
     fun mostrarHoras(meop:String){
         var totalhExtra:Int=0
         try {
@@ -214,7 +210,7 @@ class HorasExtra : AppCompatActivity(), NavigationView.OnNavigationItemSelectedL
     interface RolCallback2 {
         fun horasRecibido2(h: ArrayList<RegistroL>)
     }
-
+    //recuperar el arraylist de resgitro laboral para manipularlo y mostrar las horas extra
     fun recuperarRegistro2( callback:RolCallback2){
         db.collection("usuarios").document(em).get()
             .addOnCompleteListener { task ->
@@ -232,6 +228,7 @@ class HorasExtra : AppCompatActivity(), NavigationView.OnNavigationItemSelectedL
             }
     }
 
+
     override fun onBackPressed() {
         if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
             binding.drawerLayout.closeDrawer(GravityCompat.START)
@@ -240,7 +237,7 @@ class HorasExtra : AppCompatActivity(), NavigationView.OnNavigationItemSelectedL
         }
     }
 
-    override fun onNavigationItemSelected(@NonNull menuItem: MenuItem): Boolean {
+    override fun onNavigationItemSelected( menuItem: MenuItem): Boolean {
         val bundle:Bundle? = intent.extras
         val email = bundle?.getString("email").toString()
         val per = bundle?.getString("perfil").toString()

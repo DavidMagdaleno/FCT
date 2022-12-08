@@ -1,14 +1,17 @@
 package com.example.proyectofinalfct
 
+import android.content.Context
 import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
+import androidx.core.view.isVisible
 import com.example.proyectofinalfct.databinding.ActivityMainBinding
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-
 
 
 class MainActivity : AppCompatActivity() {
@@ -16,6 +19,7 @@ class MainActivity : AppCompatActivity() {
     private val db = FirebaseFirestore.getInstance() //Variable con la que accederemos a Firestore. Será una instancia a la bd.
 
 
+    @RequiresApi(Build.VERSION_CODES.P)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding= ActivityMainBinding.inflate(layoutInflater)
@@ -27,7 +31,8 @@ class MainActivity : AppCompatActivity() {
         bundle.putString("message","Integración completada")
         analy.logEvent("InitScreen",bundle)
 
-
+        binding.btnPruebaGuardar.isEnabled=false
+        binding.btnPruebaGuardar.isVisible=false
         title = "Autenticación"
         binding.btnPruebaGuardar.setOnClickListener(){
             if (!binding.txtUser.text.trim().isNullOrEmpty() && !binding.txtPwd.text.trim().isNullOrEmpty()){
@@ -52,6 +57,8 @@ class MainActivity : AppCompatActivity() {
                         showAlert(R.string.Login_Error_3)
                     }
                 }
+            }else{
+                showAlert(R.string.Login_Error_2)
             }
         }
     }
@@ -78,7 +85,7 @@ class MainActivity : AppCompatActivity() {
         val builder = AlertDialog.Builder(this)
         builder.setTitle("Error")
         builder.setMessage(t)
-        builder.setPositiveButton("Aceptar",null)
+        builder.setPositiveButton(R.string.Accept,null)
         val dialog: AlertDialog = builder.create()
         dialog.show()
     }

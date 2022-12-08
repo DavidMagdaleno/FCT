@@ -4,8 +4,10 @@ import Model.AJustificante
 import Model.Dias
 import Model.Notifica
 import Model.RegistroL
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
@@ -14,6 +16,7 @@ import android.widget.CalendarView
 import android.widget.EditText
 import android.widget.Toast
 import androidx.annotation.NonNull
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -49,11 +52,11 @@ class Justificante : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private var NomArch:String=""
 
+    @RequiresApi(Build.VERSION_CODES.P)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding= ActivityJustificanteBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         binding.navigationView.setNavigationItemSelectedListener(this)
 
         val toggle = ActionBarDrawerToggle(this,binding.drawerLayout,binding.toolbar,
@@ -96,6 +99,7 @@ class Justificante : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
+    //Subir el archivo elegido a storage
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         val bundle:Bundle? = intent.extras
         val email = bundle?.getString("email").toString()
@@ -120,7 +124,7 @@ class Justificante : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
         }
     }
-
+    //llamada al calendario para seleccionar el dia de inicio o de fin
     private fun DialogLogin(txt: Button): Boolean {
         val dialogo: android.app.AlertDialog.Builder = android.app.AlertDialog.Builder(this)
         val Myview=layoutInflater.inflate(R.layout.item_calendar, null)
@@ -144,7 +148,7 @@ class Justificante : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         dialogo.show()
         return true
     }
-
+    //Recuperar los datos del usuario para luego modificarlos y guardarlos
     private fun Recuperar(){
         val bundle:Bundle? = intent.extras
         val email = bundle?.getString("email").toString()
@@ -170,6 +174,7 @@ class Justificante : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             Toast.makeText(this, "Algo ha ido mal al recuperar",Toast.LENGTH_SHORT).show()
         }
     }
+    //guardar los datos de usuario
     private fun Guardar(){
         val bundle:Bundle? = intent.extras
         val email = bundle?.getString("email").toString()
@@ -200,7 +205,7 @@ class Justificante : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 Toast.makeText(this, "Ha ocurrido un error", Toast.LENGTH_SHORT).show()
             }
     }
-
+    //mostrar alertas y notificaciones
     private fun showAlert(t:Int){
         val builder = AlertDialog.Builder(this)
         builder.setTitle(R.string.Notificacion)
@@ -218,7 +223,8 @@ class Justificante : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
-    override fun onNavigationItemSelected(@NonNull menuItem: MenuItem): Boolean {
+
+    override fun onNavigationItemSelected( menuItem: MenuItem): Boolean {
         val bundle:Bundle? = intent.extras
         val email = bundle?.getString("email").toString()
         val per = bundle?.getString("perfil").toString()

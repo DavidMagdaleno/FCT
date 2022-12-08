@@ -57,8 +57,8 @@ tools:openDrawer="start">
 
         <Button
             android:id="@+id/btnB"
-            android:layout_width="227dp"
-            android:layout_height="48dp"
+            android:layout_width="324dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:backgroundTint="@color/bluespecial"
             android:text="@string/back"
